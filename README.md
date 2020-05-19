@@ -15,7 +15,7 @@ Kryteria oceny:
 - Narzędzia:
 
     - czy projekt jest Mavenowy i czy poprawnie buduje się z linii komend konsoli systemu operacyjnego (uruchomionej poza środowiskiem deweloperskim) 
-    :heavy_check_mark: (Jenkins nam to zapewnia)
+    :heavy_check_mark: (Travis nam to zapewnia)
 
     - czy budowany jest przez Mavena wykonywalny jar możliwy do uruchomienia z konsoli systemu operacyjnego (uruchomionej poza środowiskiem deweloperskim) 
     :x:
