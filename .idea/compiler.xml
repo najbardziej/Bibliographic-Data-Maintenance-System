@@ -20,7 +20,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="Bibliographic-Data-Maintenance-System" target="1.5" />
+      <module name="Bibliographic-Data-Maintenance-System" target="8" />
     </bytecodeTargetLevel>
   </component>
 </project>
