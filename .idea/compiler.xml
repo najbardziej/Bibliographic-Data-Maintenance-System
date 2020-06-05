@@ -19,8 +19,8 @@
         <module name="Bibliographic-Data-Maintenance-System" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="Bibliographic-Data-Maintenance-System" target="11" />
+    <bytecodeTargetLevel target="14">
+      <module name="Bibliographic-Data-Maintenance-System" target="14" />
     </bytecodeTargetLevel>
   </component>
 </project>
