@@ -15,10 +15,10 @@ public class XmlImportExport
     }
 
     //from Java Object to XML file
-    public void javaObjectToXmlFile(MyJavaObject obj) throws IOException
+    public void javaObjectToXmlFile(MyJavaObject obj, String path) throws IOException
     {
         XmlMapper xmlMapper = new XmlMapper();
-        File file = new File("my_java_object.xml");
+        File file = new File(path);
         xmlMapper.writeValue(file, obj);
     }
 

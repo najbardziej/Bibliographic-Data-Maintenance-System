@@ -20,6 +20,9 @@ public class Controller {
     private Button buttonOpenXml;
 
     @FXML
+    private Button buttonSaveFile;
+
+    @FXML
     private CheckBox selectAllCheckbox;
 
     @FXML
@@ -119,10 +122,16 @@ public class Controller {
     }
 
     @FXML
-    void save_xml(ActionEvent event) {
-//        XmlImportExport xml = new XmlImportExport();
-//        xml.javaObjectToXmlFile();
+    void save_xml(ActionEvent event) throws IOException {
+        FileChooser fileChooser = new FileChooser();
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("XML Files", "*.xml");
+        fileChooser.getExtensionFilters().add(extFilter);
 
+        File file = fileChooser.showSaveDialog(buttonSaveFile.getScene().getWindow());
+
+        MyJavaObject obj = tableView.getSelectionModel().getSelectedItem();
+        XmlImportExport xml = new XmlImportExport();
+        xml.javaObjectToXmlFile(obj, file.getAbsolutePath());
     }
 
     public void changeTitleCellEvent(TableColumn.CellEditEvent cellEditEvent) {
