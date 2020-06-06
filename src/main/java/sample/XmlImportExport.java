@@ -1,30 +1,8 @@
 package sample;
 
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import javafx.scene.control.CheckBox;
 
 import java.io.*;
-
-class MyJavaObject
-{
-    private String title;
-    private String author;
-    private String publisher;
-    private short year;
-    private CheckBox remark;
-
-    public String getTitle() { return title;}
-    public String getAuthor() { return author;}
-    public String getPublisher() { return publisher;}
-    public short getYear() { return year;}
-    public CheckBox getRemark() {return remark;}
-
-    public void setTitle(String newTitle) { this.title = newTitle; }
-    public void setAuthor(String newAuthor) { this.author = newAuthor; }
-    public void setPublisher(String newPublisher) { this.publisher = newPublisher; }
-    public void setYear(short newYear) { this.year = newYear; }
-    public void setRemark(CheckBox remark){ this.remark = remark; }
-}
 
 public class XmlImportExport
 {
