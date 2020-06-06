@@ -16,6 +16,7 @@ public class Main extends Application {
     public void start(Stage stage) throws IOException {
         scene = new Scene(loadFXML("sample"));
         stage.setScene(scene);
+        stage.setTitle("Bibliographic Data Maintenance");
         stage.show();
     }
 
