@@ -136,7 +136,7 @@ public class Controller {
 
         //MyJavaObject obj = tableView.getSelectionModel().getSelectedItem();
         XmlImportExport xml = new XmlImportExport();
-        xml.javaObjectToXmlFile(oj, file.getAbsolutePath());
+        xml.javaObjectToXmlFile(obj, file.getAbsolutePath());
     }
 
     public void changeTitleCellEvent(TableColumn.CellEditEvent cellEditEvent) {
