@@ -1,5 +1,6 @@
 package sample;
 
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -123,15 +124,19 @@ public class Controller {
 
     @FXML
     void save_xml(ActionEvent event) throws IOException {
+        ObservableList<MyJavaObject> productsList;
+        productsList = tableView.getSelectionModel().getSelectedItems();
+        // getting selected object
+        MyJavaObject obj = productsList.get(0);
+
         FileChooser fileChooser = new FileChooser();
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("XML Files", "*.xml");
         fileChooser.getExtensionFilters().add(extFilter);
-
         File file = fileChooser.showSaveDialog(buttonSaveFile.getScene().getWindow());
 
-        MyJavaObject obj = tableView.getSelectionModel().getSelectedItem();
+        //MyJavaObject obj = tableView.getSelectionModel().getSelectedItem();
         XmlImportExport xml = new XmlImportExport();
-        xml.javaObjectToXmlFile(obj, file.getAbsolutePath());
+        xml.javaObjectToXmlFile(oj, file.getAbsolutePath());
     }
 
     public void changeTitleCellEvent(TableColumn.CellEditEvent cellEditEvent) {
