@@ -1,6 +1,8 @@
 package sample;
 
 import java.io.*;
+import java.util.List;
+
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 
 public class XmlImportExport
@@ -9,8 +11,7 @@ public class XmlImportExport
     public String javaObjectToXmlString() throws IOException
     {
         XmlMapper xmlMapper = new XmlMapper();
-        String xml = xmlMapper.writeValueAsString(new MyJavaObject());
-        return xml;
+        return xmlMapper.writeValueAsString(new MyJavaObject());
     }
 
     //from Java Object to XML file
@@ -25,8 +26,7 @@ public class XmlImportExport
     public MyJavaObject xmlStringToJavaObject(String string) throws IOException
     {
         XmlMapper xmlMapper = new XmlMapper();
-        MyJavaObject value = xmlMapper.readValue(string, MyJavaObject.class);
-        return value;
+        return xmlMapper.readValue(string, MyJavaObject.class);
     }
 
     //from XML file to String
@@ -41,5 +41,38 @@ public class XmlImportExport
         }
         br.close();
         return sb.toString();
+    }
+
+
+
+    //from Java Object to XML String
+    public static String javaObjectToXmlString(Bibliography bibliography) throws IOException
+    {
+        XmlMapper xmlMapper = new XmlMapper();
+        return xmlMapper.writeValueAsString(bibliography);
+    }
+
+    //from Java Object to XML file
+    public static void javaObjectToXmlFile(Bibliography bibliography, String path) throws IOException
+    {
+        XmlMapper xmlMapper = new XmlMapper();
+        File file = new File(path);
+        xmlMapper.writeValue(file, bibliography);
+    }
+
+    //from XML String to Java Object
+    public static Bibliography xmlStringToJavaObject(String string, Class c) throws IOException
+    {
+        // TODO: usunąć xmlStringToJavaObject zwracającą MyJavaObject i usunąć zbędny argument Class c
+        XmlMapper xmlMapper = new XmlMapper();
+        return xmlMapper.readValue(string, Bibliography.class);
+    }
+
+    //from Java Object to XML file
+    public static void javaObjectToXmlFile(List<MyJavaObject> bibliography, String path) throws IOException
+    {
+        XmlMapper xmlMapper = new XmlMapper();
+        File file = new File(path);
+        xmlMapper.writeValue(file, bibliography);
     }
 }
