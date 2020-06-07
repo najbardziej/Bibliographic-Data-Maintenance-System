@@ -1,8 +1,7 @@
 package sample;
 
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-
 import java.io.*;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 
 public class XmlImportExport
 {

@@ -1,17 +1,15 @@
 package sample;
 
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import java.io.*;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
-
-import java.io.*;
 
 
 public class DocxExport {
     // from Java Object to docx file
     public void javaObjectToDocxFile(MyJavaObject obj, String path) {
-        File file = new File(path);;
+        File file = new File(path);
         FileOutputStream fos = null;
         try {
             fos = new FileOutputStream(new File(path));

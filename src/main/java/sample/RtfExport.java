@@ -1,9 +1,9 @@
 package sample;
 
+import java.io.*;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import javax.swing.text.rtf.RTFEditorKit;
-import java.io.*;
 
 
 public class RtfExport {

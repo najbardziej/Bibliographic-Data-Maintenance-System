@@ -1,5 +1,7 @@
 package sample;
 
+import java.io.*;
+import java.util.List;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -7,16 +9,9 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.stage.FileChooser;
-import javafx.util.converter.NumberStringConverter;
 import javafx.util.converter.ShortStringConverter;
 import java.lang.String;
 
-import java.lang.reflect.*;
-
-import java.io.*;
-import java.util.InputMismatchException;
-import java.util.List;
-import java.util.Scanner;
 
 public class Controller {
 
@@ -122,7 +117,7 @@ public class Controller {
     }
 
     @FXML
-    void close_xml(ActionEvent event) throws IOException{
+    void close_xml(ActionEvent event) {
         Alert notPickedFileAlert = new Alert(Alert.AlertType.ERROR,
                 "You have not chosen any file to remove", ButtonType.OK);
         int index = listOpenedXml.getSelectionModel().getSelectedIndex();
@@ -136,7 +131,7 @@ public class Controller {
     }
 
     @FXML
-    void add_record(ActionEvent event) throws IOException{
+    void add_record(ActionEvent event) {
         Alert emptyFieldsAlert = new Alert(Alert.AlertType.ERROR,
                 "Wrong input: At least one field must be filled", ButtonType.OK);
         Alert yearNotANumberAlert = new Alert(Alert.AlertType.ERROR,
@@ -153,7 +148,7 @@ public class Controller {
             my.setTitle(title);
             my.setAuthor(author);
             my.setPublisher(publisher);
-            my.setYear((short) year);
+            my.setYear(year);
             tableView.getItems().add(my);
         }
         catch(NumberFormatException e){
@@ -165,7 +160,7 @@ public class Controller {
     }
 
     @FXML
-    void delete_row(ActionEvent event) throws IOException{
+    void delete_row(ActionEvent event) {
         Alert notPickedRecordAlert = new Alert(Alert.AlertType.ERROR,
                 "You have not chosen any record to remove", ButtonType.OK);
         int index = tableView.getSelectionModel().getSelectedIndex();
@@ -177,7 +172,7 @@ public class Controller {
     }
 
     @FXML
-    void exportToFile(ActionEvent event) throws IOException{
+    void exportToFile(ActionEvent event) {
         String extension = (String) extensionComboBox.getValue();
         ObservableList<MyJavaObject> productsList;
         productsList = tableView.getItems();
