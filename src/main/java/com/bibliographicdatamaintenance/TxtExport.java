@@ -1,19 +1,17 @@
-package sample;
+package com.bibliographicdatamaintenance;
 
 import java.io.*;
 
-public class BibTeXExport {
+public class TxtExport {
     // from Java Object to bib file
-    public void javaObjectToBiBTeXFile(MyJavaObject obj, String path) {
+    public void javaObjectToTxtFile(MyJavaObject obj, String path) {
         BufferedWriter bw = null;
         try {
             bw = new BufferedWriter(new FileWriter(path));
-            bw.write("@Book{\n");
-            bw.write("\tauthor =    " + obj.getAuthor() + ",\n");
-            bw.write("\ttitle =     " + obj.getTitle() + ",\n");
-            bw.write("\tpublisher = " + obj.getPublisher() + ",\n");
-            bw.write("\tyear =      " + obj.getYear() + "\n");
-            bw.write("}\n");
+            bw.write("Title: " + obj.getTitle() + '\n');
+            bw.write("Author: " + obj.getAuthor() + '\n');
+            bw.write("Publisher: " + obj.getPublisher() + '\n');
+            bw.write("Year: " + obj.getYear() + '\n');
         } catch(IOException e) {
             System.err.println("Error during saving to file");
             e.printStackTrace();

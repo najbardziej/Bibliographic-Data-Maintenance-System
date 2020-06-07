@@ -1,4 +1,4 @@
-package sample;
+package com.bibliographicdatamaintenance;
 
 import java.io.IOException;
 import javafx.application.Application;

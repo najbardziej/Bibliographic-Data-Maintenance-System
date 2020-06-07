@@ -1,4 +1,4 @@
-package sample;
+package com.bibliographicdatamaintenance;
 
 import java.io.*;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
