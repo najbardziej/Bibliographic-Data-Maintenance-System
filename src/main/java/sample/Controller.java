@@ -118,55 +118,54 @@ public class Controller {
 
     @FXML
     void close_xml(ActionEvent event) {
-        Alert notPickedFileAlert = new Alert(Alert.AlertType.ERROR,
-                "You have not chosen any file to remove", ButtonType.OK);
         int index = listOpenedXml.getSelectionModel().getSelectedIndex();
-        if(index!=-1){
+        if(index!=-1) {
             buttonCloseXml.getScene().getWindow();
             listOpenedXml.getItems().remove(index);
             tableView.getItems().remove(index);
-        }else{
+        } else {
+            Alert notPickedFileAlert = new Alert(Alert.AlertType.ERROR,
+                    "You have not chosen any file to remove", ButtonType.OK);
             notPickedFileAlert.showAndWait();
         }
     }
 
     @FXML
     void add_record(ActionEvent event) {
-        Alert emptyFieldsAlert = new Alert(Alert.AlertType.ERROR,
-                "Wrong input: At least one field must be filled", ButtonType.OK);
-        Alert yearNotANumberAlert = new Alert(Alert.AlertType.ERROR,
-                "Wrong input: Year must be an integer value", ButtonType.OK);
         String title = titleTextFieldToAdd.getText();
         String author = authorTextFieldToAdd.getText();
         String publisher = publisherTextFieldToAdd.getText();
         short year;
-        try{
+        try {
             year = Short.parseShort(yearTextFieldToAdd.getText());
-            if(title.equals("") && author.equals("") && publisher.equals("") && year <= 0){
-                throw new RuntimeException("Cannot add empty fields");}
+            if(title.equals("") && author.equals("") && publisher.equals("") && year <= 0) {
+                throw new RuntimeException("Cannot add empty fields");
+            }
             MyJavaObject my = new MyJavaObject();
             my.setTitle(title);
             my.setAuthor(author);
             my.setPublisher(publisher);
             my.setYear(year);
             tableView.getItems().add(my);
-        }
-        catch(NumberFormatException e){
+        } catch(NumberFormatException e) {
+            Alert yearNotANumberAlert = new Alert(Alert.AlertType.ERROR,
+                    "Wrong input: Year must be an integer value", ButtonType.OK);
             yearNotANumberAlert.showAndWait();
-        }
-        catch(RuntimeException e){
+        } catch(RuntimeException e) {
+            Alert emptyFieldsAlert = new Alert(Alert.AlertType.ERROR,
+                    "Wrong input: At least one field must be filled", ButtonType.OK);
             emptyFieldsAlert.showAndWait();
         }
     }
 
     @FXML
     void delete_row(ActionEvent event) {
-        Alert notPickedRecordAlert = new Alert(Alert.AlertType.ERROR,
-                "You have not chosen any record to remove", ButtonType.OK);
         int index = tableView.getSelectionModel().getSelectedIndex();
-        if(index!=-1){
+        if(index!=-1) {
             tableView.getItems().remove(index);
-        }else{
+        } else {
+            Alert notPickedRecordAlert = new Alert(Alert.AlertType.ERROR,
+                    "You have not chosen any record to remove", ButtonType.OK);
             notPickedRecordAlert.showAndWait();
         }
     }
@@ -176,33 +175,30 @@ public class Controller {
         String extension = (String) extensionComboBox.getValue();
         ObservableList<MyJavaObject> productsList;
         productsList = tableView.getItems();
-        MyJavaObject my = productsList.get(0);  //zmiana na czekboksy;)
+        MyJavaObject my = productsList.get(0);  // TODO: zmiana na czekboksy;)
         FileChooser fileChooser = new FileChooser();
-        if(extension.equals(".docx")){
-            FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("docx Files", "*.docx");
-            fileChooser.getExtensionFilters().add(extFilter);
-            File file = fileChooser.showSaveDialog(exportSaveButton.getScene().getWindow());
+        FileChooser.ExtensionFilter extFilter = null;
+        if(extension.equals(".docx")) {
+            extFilter = new FileChooser.ExtensionFilter("docx Files", "*.docx");
+        } else if(extension.equals(".bib")) {
+            extFilter = new FileChooser.ExtensionFilter("bib Files", "*.bib");
+        } else if(extension.equals(".txt")) {
+            extFilter = new FileChooser.ExtensionFilter("txt Files", "*.txt");
+        } else if(extension.equals(".rtf")) {
+            extFilter = new FileChooser.ExtensionFilter("rtf Files", "*.rtf");
+        }
+        fileChooser.getExtensionFilters().add(extFilter);
+        File file = fileChooser.showSaveDialog(exportSaveButton.getScene().getWindow());
+        if(extension.equals(".docx")) {
             DocxExport docx = new DocxExport();
             docx.javaObjectToDocxFile(my, file.getAbsolutePath());
-        }
-        else if (extension.equals(".bib")){
-            FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("bib Files", "*.bib");
-            fileChooser.getExtensionFilters().add(extFilter);
-            File file = fileChooser.showSaveDialog(exportSaveButton.getScene().getWindow());
+        } else if(extension.equals(".bib")) {
             BibTeXExport rtf = new BibTeXExport();
             rtf.javaObjectToBiBTeXFile(my, file.getAbsolutePath());
-        }
-        else if (extension.equals(".txt")){
-            FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("txt Files", "*.txt");
-            fileChooser.getExtensionFilters().add(extFilter);
-            File file = fileChooser.showSaveDialog(exportSaveButton.getScene().getWindow());
+        } else if(extension.equals(".txt")) {
             TxtExport txt = new TxtExport();
             txt.javaObjectToTxtFile(my, file.getAbsolutePath());
-        }
-        else{
-            FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("rtf Files", "*.rtf");
-            fileChooser.getExtensionFilters().add(extFilter);
-            File file = fileChooser.showSaveDialog(exportSaveButton.getScene().getWindow());
+        } else if(extension.equals(".rtf")) {
             RtfExport rtf = new RtfExport();
             rtf.javaObjectToRtfFile(my, file.getAbsolutePath());
         }
@@ -213,7 +209,7 @@ public class Controller {
         ObservableList<MyJavaObject> productsList;
         productsList = tableView.getSelectionModel().getSelectedItems();
         // getting selected object
-        MyJavaObject obj = productsList.get(0);
+        MyJavaObject obj = productsList.get(0);  // TODO: zmiana na czekboksy;)
 
         FileChooser fileChooser = new FileChooser();
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("XML Files", "*.xml");
