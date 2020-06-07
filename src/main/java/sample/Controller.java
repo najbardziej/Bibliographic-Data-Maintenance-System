@@ -14,6 +14,7 @@ import java.lang.String;
 import java.lang.reflect.*;
 
 import java.io.*;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Controller {
@@ -124,35 +125,56 @@ public class Controller {
     }
     @FXML
     void close_xml(ActionEvent event) throws IOException{
+        Alert notPickedFileAlert = new Alert(Alert.AlertType.ERROR,
+                "You have not chosen any file to remove", ButtonType.OK);
         int index = listOpenedXml.getSelectionModel().getSelectedIndex();
         if(index!=-1){
             buttonCloseXml.getScene().getWindow();
             listOpenedXml.getItems().remove(index);
             tableView.getItems().remove(index);
+        }else{
+            notPickedFileAlert.showAndWait();
         }
     }
 
     @FXML
     void add_record(ActionEvent event) throws IOException{
+        Alert emptyFieldsAlert = new Alert(Alert.AlertType.ERROR,
+                "Wrong input: At least one field must be filled", ButtonType.OK);
+        Alert yearNotANumberAlert = new Alert(Alert.AlertType.ERROR,
+                "Wrong input: Year must be an integer value", ButtonType.OK);
         String title = titleTextFieldToAdd.getText();
         String author = authorTextFieldToAdd.getText();
         String publisher = publisherTextFieldToAdd.getText();
-        short year = Short.parseShort(yearTextFieldToAdd.getText());
-        if (!title.equals("") && !author.equals("") && !publisher.equals("") && year>0) {
+        short year;
+        try{
+            year = Short.parseShort(yearTextFieldToAdd.getText());
+            if(title.equals("") && author.equals("") && publisher.equals("") && year <= 0){
+                throw new RuntimeException("Cannot add empty fields");}
             MyJavaObject my = new MyJavaObject();
             my.setTitle(title);
             my.setAuthor(author);
             my.setPublisher(publisher);
-            my.setYear(year);
+            my.setYear((short) year);
             tableView.getItems().add(my);
+        }
+        catch(NumberFormatException e){
+            yearNotANumberAlert.showAndWait();
+        }
+        catch(RuntimeException e){
+            emptyFieldsAlert.showAndWait();
         }
     }
 
     @FXML
     void delete_row(ActionEvent event) throws IOException{
+        Alert notPickedRecordAlert = new Alert(Alert.AlertType.ERROR,
+                "You have not chosen any record to remove", ButtonType.OK);
         int index = tableView.getSelectionModel().getSelectedIndex();
         if(index!=-1){
             tableView.getItems().remove(index);
+        }else{
+            notPickedRecordAlert.showAndWait();
         }
     }
 
