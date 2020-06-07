@@ -15,6 +15,7 @@ import java.lang.reflect.*;
 
 import java.io.*;
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
 
 public class Controller {
@@ -104,25 +105,22 @@ public class Controller {
         );
 
         // Pokazanie okna i zwrócenie wybranego pliku do zmiennej
-        File selectedFile = fileChooser.showOpenDialog(buttonOpenXml.getScene().getWindow());
-        if (selectedFile != null) {
-            // Dodanie nazwy pliku do ListView
-            listOpenedXml.getItems().add(selectedFile.getName());
+        List<File> fileList = fileChooser.showOpenMultipleDialog(buttonOpenXml.getScene().getWindow());
+        if (fileList != null){
+            for(File selectedFile : fileList){
+                listOpenedXml.getItems().add(selectedFile.getName());
 
-
-            // Konwersja z pliku .xml do obiektu
-            XmlImportExport xml = new XmlImportExport();
-            InputStream inputStream = new FileInputStream(selectedFile);
-            String xml_line = xml.xmlFileToString(inputStream);
-            inputStream.close();
-            MyJavaObject my = xml.xmlStringToJavaObject(xml_line);
-
-            // Dodanie obiketu do TableView
-            tableView.getItems().add(my);
-
-            System.out.println(xml_line);
+                // Konwersja z pliku .xml do obiektu
+                XmlImportExport xml = new XmlImportExport();
+                InputStream inputStream = new FileInputStream(selectedFile);
+                String xml_line = xml.xmlFileToString(inputStream);
+                inputStream.close();
+                MyJavaObject my = xml.xmlStringToJavaObject(xml_line);
+                tableView.getItems().add(my);
+            }
         }
     }
+
     @FXML
     void close_xml(ActionEvent event) throws IOException{
         Alert notPickedFileAlert = new Alert(Alert.AlertType.ERROR,
