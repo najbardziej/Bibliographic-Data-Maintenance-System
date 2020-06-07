@@ -37,26 +37,28 @@ public class Main extends Application {
     public static void main(String[] args) {
         launch();
 
-        MyJavaObject my = new MyJavaObject();
-        my.setTitle("Tytuł");
-        my.setAuthor("Autor");
-        my.setPublisher("Wydawnictwo");
-        my.setYear((short)2020);
+        //MyJavaObject my = new MyJavaObject();
+        //my.setTitle("Tytuł");
+        //my.setAuthor("Autor");
+        //my.setPublisher("Wydawnictwo");
+        //my.setYear((short)2020);
+
 
 //        XmlImportExport xml = new XmlImportExport();
 //        xml.javaObjectToXmlFile(my);
 
-        BibTeXExport bib = new BibTeXExport();
-        bib.javaObjectToBiBTeXFile(my);
+        //BibTeXExport bib = new BibTeXExport();
+        //bib.javaObjectToBiBTeXFile(my);
 
-        RtfExport rtf = new RtfExport();
-        rtf.javaObjectToRtfFile(my);
+        //RtfExport rtf = new RtfExport();
+        //rtf.javaObjectToRtfFile(my);
 
-        TxtExport txt = new TxtExport();
-        txt.javaObjectToTxtFile(my);
+        //TxtExport txt = new TxtExport();
+        //txt.javaObjectToTxtFile(my);
 
-        DocxExport docx = new DocxExport();
-        docx.javaObjectToDocxFile(my);
+        //DocxExport docx = new DocxExport();
+        //docx.javaObjectToDocxFile(my);
+
 
     }
 }
