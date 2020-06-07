@@ -9,6 +9,7 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.stage.FileChooser;
 import javafx.util.converter.NumberStringConverter;
 import javafx.util.converter.ShortStringConverter;
+import java.lang.String;
 
 import java.lang.reflect.*;
 
@@ -21,7 +22,13 @@ public class Controller {
     private Button buttonOpenXml;
 
     @FXML
+    private Button buttonCloseXml;
+
+    @FXML
     private Button buttonSaveFile;
+
+    @FXML
+    private Button deleteRow;
 
     @FXML
     private CheckBox selectAllCheckbox;
@@ -45,25 +52,16 @@ public class Controller {
     private TableColumn<MyJavaObject, Short> tableViewYearColumn;
 
     @FXML
-    private Tab modifyTab;
+    private TextField titleTextFieldToAdd;
 
     @FXML
-    private TextField titleTextField;
+    private TextField authorTextFieldToAdd;
 
     @FXML
-    private TextField authorTextField;
+    private TextField publisherTextFieldToAdd;
 
     @FXML
-    private TextField publisherTextField;
-
-    @FXML
-    private TextField yearTextField;
-
-    @FXML
-    private Button modifySaveButoon;
-
-    @FXML
-    private Tab exportTab;
+    private TextField yearTextFieldToAdd;
 
     @FXML
     private TextField fileNameTextBox;
@@ -76,6 +74,9 @@ public class Controller {
 
     @FXML
     private ListView<String> listOpenedXml;
+
+    @FXML
+    private boolean observableArrayList;
 
     @FXML
     public void initialize() {
@@ -119,6 +120,69 @@ public class Controller {
             tableView.getItems().add(my);
 
             System.out.println(xml_line);
+        }
+    }
+    @FXML
+    void close_xml(ActionEvent event) throws IOException{
+        int index = listOpenedXml.getSelectionModel().getSelectedIndex();
+        if(index!=-1){
+            buttonCloseXml.getScene().getWindow();
+            listOpenedXml.getItems().remove(index);
+            tableView.getItems().remove(index);
+        }
+    }
+
+    @FXML
+    void add_record(ActionEvent event) throws IOException{
+        String title = titleTextFieldToAdd.getText();
+        String author = authorTextFieldToAdd.getText();
+        String publisher = publisherTextFieldToAdd.getText();
+        short year = Short.parseShort(yearTextFieldToAdd.getText());
+        if (!title.equals("") && !author.equals("") && !publisher.equals("") && year>0) {
+            MyJavaObject my = new MyJavaObject();
+            my.setTitle(title);
+            my.setAuthor(author);
+            my.setPublisher(publisher);
+            my.setYear(year);
+            tableView.getItems().add(my);
+        }
+    }
+
+    @FXML
+    void delete_row(ActionEvent event) throws IOException{
+        int index = tableView.getSelectionModel().getSelectedIndex();
+        if(index!=-1){
+            tableView.getItems().remove(index);
+        }
+    }
+
+    @FXML
+    void exportToFile(ActionEvent event) throws IOException{
+        String extension = (String) extensionComboBox.getValue();
+        ObservableList<MyJavaObject> productsList;
+        productsList = tableView.getItems();
+        MyJavaObject my = productsList.get(0);  //zmiana na czekboksy;)
+        FileChooser fileChooser = new FileChooser();
+        if(extension.equals(".docx")){
+            FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("docx Files", "*.docx");
+            fileChooser.getExtensionFilters().add(extFilter);
+            File file = fileChooser.showSaveDialog(exportSaveButton.getScene().getWindow());
+            DocxExport docx = new DocxExport();
+            docx.javaObjectToDocxFile(my, file.getAbsolutePath());
+        }
+        else if (extension.equals(".bib")){
+            FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("bib Files", "*.bib");
+            fileChooser.getExtensionFilters().add(extFilter);
+            File file = fileChooser.showSaveDialog(exportSaveButton.getScene().getWindow());
+            BibTeXExport rtf = new BibTeXExport();
+            rtf.javaObjectToBiBTeXFile(my, file.getAbsolutePath());
+        }
+        else{
+            FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("rtf Files", "*.rtf");
+            fileChooser.getExtensionFilters().add(extFilter);
+            File file = fileChooser.showSaveDialog(exportSaveButton.getScene().getWindow());
+            RtfExport rtf = new RtfExport();
+            rtf.javaObjectToRtfFile(my, file.getAbsolutePath());
         }
     }
 
