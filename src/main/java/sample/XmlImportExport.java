@@ -1,26 +1,7 @@
 package sample;
 
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-
 import java.io.*;
-
-class MyJavaObject
-{
-    private String title;
-    private String author;
-    private String publisher;
-    private short year;
-
-    public String getTitle() { return title;}
-    public String getAuthor() { return author;}
-    public String getPublisher() { return publisher;}
-    public short getYear() { return year;}
-
-    public void setTitle(String newTitle) { this.title = newTitle; }
-    public void setAuthor(String newAuthor) { this.author = newAuthor; }
-    public void setPublisher(String newPublisher) { this.publisher = newPublisher; }
-    public void setYear(short newYear) { this.year = newYear; }
-}
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 
 public class XmlImportExport
 {
@@ -33,10 +14,10 @@ public class XmlImportExport
     }
 
     //from Java Object to XML file
-    public void javaObjectToXmlFile(MyJavaObject obj) throws IOException
+    public void javaObjectToXmlFile(MyJavaObject obj, String path) throws IOException
     {
         XmlMapper xmlMapper = new XmlMapper();
-        File file = new File("my_java_object.xml");
+        File file = new File(path);
         xmlMapper.writeValue(file, obj);
     }
 

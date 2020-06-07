@@ -1,14 +1,14 @@
 package sample;
 
+import java.io.*;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import javax.swing.text.rtf.RTFEditorKit;
-import java.io.*;
 
 
 public class RtfExport {
     // from Java Object to rtf file
-    public void javaObjectToRtfFile(MyJavaObject obj) {
+    public void javaObjectToRtfFile(MyJavaObject obj, String path) {
         RTFEditorKit rtfParser = new RTFEditorKit();
         Document document = rtfParser.createDefaultDocument();
         try {
@@ -24,7 +24,7 @@ public class RtfExport {
         File file;
         FileOutputStream fos = null;
         try {
-            fos = new FileOutputStream(new File("my_java_object.rtf"));
+            fos = new FileOutputStream(new File(path));
         } catch (FileNotFoundException e) {
             System.err.println("Error during open file");
             e.printStackTrace();

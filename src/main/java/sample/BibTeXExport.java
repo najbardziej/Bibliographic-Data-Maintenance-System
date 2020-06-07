@@ -4,10 +4,10 @@ import java.io.*;
 
 public class BibTeXExport {
     // from Java Object to bib file
-    public void javaObjectToBiBTeXFile(MyJavaObject obj) {
+    public void javaObjectToBiBTeXFile(MyJavaObject obj, String path) {
         BufferedWriter bw = null;
         try {
-            bw = new BufferedWriter(new FileWriter("my_java_object.bib"));
+            bw = new BufferedWriter(new FileWriter(path));
             bw.write("@Book{\n");
             bw.write("\tauthor =    " + obj.getAuthor() + ",\n");
             bw.write("\ttitle =     " + obj.getTitle() + ",\n");

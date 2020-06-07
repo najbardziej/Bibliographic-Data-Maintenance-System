@@ -4,10 +4,10 @@ import java.io.*;
 
 public class TxtExport {
     // from Java Object to bib file
-    public void javaObjectToTxtFile(MyJavaObject obj) {
+    public void javaObjectToTxtFile(MyJavaObject obj, String path) {
         BufferedWriter bw = null;
         try {
-            bw = new BufferedWriter(new FileWriter("my_java_object.txt"));
+            bw = new BufferedWriter(new FileWriter(path));
             bw.write("Title: " + obj.getTitle() + '\n');
             bw.write("Author: " + obj.getAuthor() + '\n');
             bw.write("Publisher: " + obj.getPublisher() + '\n');

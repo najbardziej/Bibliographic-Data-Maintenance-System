@@ -1,19 +1,18 @@
 package sample;
 
+import java.io.*;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 
-import java.io.*;
-
 
 public class DocxExport {
     // from Java Object to docx file
-    public void javaObjectToDocxFile(MyJavaObject obj) {
-        File file;
+    public void javaObjectToDocxFile(MyJavaObject obj, String path) {
+        File file = new File(path);
         FileOutputStream fos = null;
         try {
-            fos = new FileOutputStream(new File("my_java_object.docx"));
+            fos = new FileOutputStream(new File(path));
         } catch (FileNotFoundException e) {
             System.err.println("Error during open file");
             e.printStackTrace();
