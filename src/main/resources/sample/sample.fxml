@@ -89,6 +89,7 @@
                                             <String fx:value=".bib" />
                                             <String fx:value=".rtf" />
                                             <String fx:value=".docx"/>
+                                            <String fx:value=".txt"/>
                                         </FXCollections>
                                     </items>
                                     <value>

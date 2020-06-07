@@ -177,6 +177,13 @@ public class Controller {
             BibTeXExport rtf = new BibTeXExport();
             rtf.javaObjectToBiBTeXFile(my, file.getAbsolutePath());
         }
+        else if (extension.equals(".txt")){
+            FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("txt Files", "*.txt");
+            fileChooser.getExtensionFilters().add(extFilter);
+            File file = fileChooser.showSaveDialog(exportSaveButton.getScene().getWindow());
+            TxtExport txt = new TxtExport();
+            txt.javaObjectToTxtFile(my, file.getAbsolutePath());
+        }
         else{
             FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("rtf Files", "*.rtf");
             fileChooser.getExtensionFilters().add(extFilter);
