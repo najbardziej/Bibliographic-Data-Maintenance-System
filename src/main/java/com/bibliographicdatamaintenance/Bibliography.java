@@ -10,20 +10,20 @@ import java.util.*;
 public class Bibliography {
     @JacksonXmlElementWrapper(useWrapping = false)
     @JacksonXmlProperty(localName = "book")
-    private List<MyJavaObject> myList;
+    private List<Book> myList;
 
-    public Bibliography(List<MyJavaObject> myList) {
+    public Bibliography(List<Book> myList) {
         this.myList = myList;
     }
 
     public Bibliography() {
     }
 
-    public List<MyJavaObject> getMyList() {
+    public List<Book> getMyList() {
         return this.myList;
     }
 
-    public void setMyList(List<MyJavaObject> myList) {
+    public void setMyList(List<Book> myList) {
         this.myList = myList;
     }
 }

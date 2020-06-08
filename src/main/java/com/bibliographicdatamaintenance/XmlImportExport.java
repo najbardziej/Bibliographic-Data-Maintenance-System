@@ -11,26 +11,26 @@ public class XmlImportExport
     public String javaObjectToXmlString() throws IOException
     {
         XmlMapper xmlMapper = new XmlMapper();
-        return xmlMapper.writeValueAsString(new MyJavaObject());
+        return xmlMapper.writeValueAsString(new Book());
     }
 
     //from Java Object to XML file
-    public void javaObjectToXmlFile(MyJavaObject obj, String path) throws IOException
+    public void javaObjectToXmlFile(Book book, String path) throws IOException
     {
         XmlMapper xmlMapper = new XmlMapper();
         File file = new File(path);
-        xmlMapper.writeValue(file, obj);
+        xmlMapper.writeValue(file, book);
     }
 
     //from XML String to Java Object
-    public MyJavaObject xmlStringToJavaObject(String string) throws IOException
+    public Book xmlStringToJavaObject(String string) throws IOException
     {
         XmlMapper xmlMapper = new XmlMapper();
-        return xmlMapper.readValue(string, MyJavaObject.class);
+        return xmlMapper.readValue(string, Book.class);
     }
 
     //from XML file to String
-    public String xmlFileToString(InputStream is) throws IOException
+    public static String xmlFileToString(InputStream is) throws IOException
     {
         StringBuilder sb = new StringBuilder();
         String line;
@@ -69,7 +69,7 @@ public class XmlImportExport
     }
 
     //from Java Object to XML file
-    public static void javaObjectToXmlFile(List<MyJavaObject> bibliography, String path) throws IOException
+    public static void javaObjectToXmlFile(List<Book> bibliography, String path) throws IOException
     {
         XmlMapper xmlMapper = new XmlMapper();
         File file = new File(path);

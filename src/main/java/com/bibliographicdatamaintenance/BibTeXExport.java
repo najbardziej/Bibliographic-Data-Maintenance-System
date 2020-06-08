@@ -4,15 +4,15 @@ import java.io.*;
 
 public class BibTeXExport {
     // from Java Object to bib file
-    public void javaObjectToBiBTeXFile(MyJavaObject obj, String path) {
+    public void javaObjectToBiBTeXFile(Book book, String path) {
         BufferedWriter bw = null;
         try {
             bw = new BufferedWriter(new FileWriter(path));
             bw.write("@Book{\n");
-            bw.write("\tauthor =    " + obj.getAuthor() + ",\n");
-            bw.write("\ttitle =     " + obj.getTitle() + ",\n");
-            bw.write("\tpublisher = " + obj.getPublisher() + ",\n");
-            bw.write("\tyear =      " + obj.getYear() + "\n");
+            bw.write("\tauthor =    " + book.getAuthor() + ",\n");
+            bw.write("\ttitle =     " + book.getTitle() + ",\n");
+            bw.write("\tpublisher = " + book.getPublisher() + ",\n");
+            bw.write("\tyear =      " + book.getYear() + "\n");
             bw.write("}\n");
         } catch(IOException e) {
             System.err.println("Error during saving to file");
