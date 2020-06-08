@@ -1,4 +1,4 @@
-package com.bibliographicdatamaintenance;
+package com.bibliographicdatamaintenance.Models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import javafx.beans.property.SimpleStringProperty;

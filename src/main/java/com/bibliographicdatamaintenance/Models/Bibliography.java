@@ -1,4 +1,4 @@
-package com.bibliographicdatamaintenance;
+package com.bibliographicdatamaintenance.Models;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;

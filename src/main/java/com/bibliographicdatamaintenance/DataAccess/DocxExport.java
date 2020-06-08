@@ -1,6 +1,8 @@
-package com.bibliographicdatamaintenance;
+package com.bibliographicdatamaintenance.DataAccess;
 
 import java.io.*;
+
+import com.bibliographicdatamaintenance.Models.Book;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;

@@ -47,4 +47,4 @@ Kryteria oceny:
     :x:
 
     - czy wykorzystano jakiś wzorzec architektoniczny, MVC, MVP lub inny, w tym wynikający z użytego frameworku (nie należy mylić wzorców architektonicznych z wzorcami projektowymi) 
-    :x:
+    :heavy_check_mark: - MVC

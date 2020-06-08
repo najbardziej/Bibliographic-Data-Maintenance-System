@@ -1,4 +1,6 @@
-package com.bibliographicdatamaintenance;
+package com.bibliographicdatamaintenance.DataAccess;
+
+import com.bibliographicdatamaintenance.Models.Book;
 
 import java.io.*;
 
