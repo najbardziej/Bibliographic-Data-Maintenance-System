@@ -30,7 +30,7 @@ Kryteria oceny:
     :heavy_check_mark:
 
     - czy struktura gałęzi repozytorium jest prawidłowo zarządzana (gałąż integracyjna, gałęzie deweloperskie każdego uczestnika projektu, merge, opcjonalnie: rozwiązywanie konfliktów, odpowiednio długa historia wersji) 
-    :x:
+    :heavy_check_mark:
 
 - Design:
 

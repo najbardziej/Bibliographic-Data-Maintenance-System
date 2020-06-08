@@ -1,6 +1,9 @@
 package com.bibliographicdatamaintenance;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -29,7 +32,29 @@ public class Main extends Application {
         return fxmlLoader.load();
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
+        // create new Bibliography
+        List<MyJavaObject> mjo = Arrays.asList(
+                new MyJavaObject("Tytuł", "Autor", "Wydawnictwo", (short) 2020),
+                new MyJavaObject("Tytuł2", "Autor2", "Wydawnictwo2", (short) 2020),
+                new MyJavaObject("Tytuł3", "Autor3", "Wydawnictwo3", (short) 2020)
+        );
+        Bibliography mys = new Bibliography(mjo);
+        System.out.println(Arrays.toString(mys.getMyList().toArray()));
+
+        // from Java Object to XML File, String
+        try {
+            XmlImportExport.javaObjectToXmlFile(mys,"mys.xml");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        String s = XmlImportExport.javaObjectToXmlString(mys);
+        System.out.println(s);
+
+        // from XML String to Java Object
+        Bibliography xms = XmlImportExport.xmlStringToJavaObject(s, Bibliography.class);
+        System.out.println(Arrays.toString(xms.getMyList().toArray()));
+
         launch();
 
         //MyJavaObject my = new MyJavaObject();
