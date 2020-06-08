@@ -2,6 +2,9 @@ package com.bibliographicdatamaintenance;
 
 import java.io.*;
 import java.util.List;
+
+import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -31,22 +34,22 @@ public class Controller {
     private CheckBox selectAllCheckbox;
 
     @FXML
-    private TableView<MyJavaObject> tableView;
+    private TableView<Book> tableView;
 
     @FXML
-    private TableColumn<MyJavaObject, String>tableViewSelectColumn;
+    private TableColumn<Book, CheckBox> tableViewSelectColumn;
 
     @FXML
-    private TableColumn<MyJavaObject, String> tableViewTitleColumn;
+    private TableColumn<Book, String> tableViewTitleColumn;
 
     @FXML
-    private TableColumn<MyJavaObject, String> tableViewAuthorColumn;
+    private TableColumn<Book, String> tableViewAuthorColumn;
 
     @FXML
-    private TableColumn<MyJavaObject, String> tableViewPublisherColumn;
+    private TableColumn<Book, String> tableViewPublisherColumn;
 
     @FXML
-    private TableColumn<MyJavaObject, Short> tableViewYearColumn;
+    private TableColumn<Book, Short> tableViewYearColumn;
 
     @FXML
     private TextField titleTextFieldToAdd;
@@ -75,9 +78,21 @@ public class Controller {
     @FXML
     private boolean observableArrayList;
 
+    ObservableList<Book> list = FXCollections.observableArrayList();
+
     @FXML
     public void initialize() {
-        // Określenie, która kolumna zawiera określony atrybut obiektu
+         // Zaznaczanie wierszy
+        TableView.TableViewSelectionModel selectionModel = tableView.getSelectionModel();
+        selectionModel.setSelectionMode(SelectionMode.MULTIPLE);
+
+        // Dodanie przykładowych obiektów do listy TODO: usunąć
+//        list = FXCollections.observableArrayList(
+//                new Book(new CheckBox(), "t", "a", "w", (short)2)
+//        );
+
+       // Określenie, która kolumna zawiera określony atrybut obiektu
+        tableViewSelectColumn.setCellValueFactory(new PropertyValueFactory<>("checkBox"));
         tableViewTitleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
         tableViewAuthorColumn.setCellValueFactory(new PropertyValueFactory<>("author"));
         tableViewPublisherColumn.setCellValueFactory(new PropertyValueFactory<>("publisher"));
@@ -89,6 +104,10 @@ public class Controller {
         tableViewAuthorColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         tableViewPublisherColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         tableViewYearColumn.setCellFactory(TextFieldTableCell.forTableColumn(new ShortStringConverter()));
+
+        // Dodanie przykładowych obiektów do listy TODO: usunąć
+//        list.add(new Book(new CheckBox(), "t", "a", "w", (short)2));
+//        tableView.setItems(list);
     }
 
     @FXML
@@ -103,21 +122,31 @@ public class Controller {
         List<File> fileList = fileChooser.showOpenMultipleDialog(buttonOpenXml.getScene().getWindow());
         if (fileList != null){
             for(File selectedFile : fileList){
-                listOpenedXml.getItems().add(selectedFile.getName());
 
                 // Konwersja z pliku .xml do obiektu
-                XmlImportExport xml = new XmlImportExport();
                 InputStream inputStream = new FileInputStream(selectedFile);
-                String xml_line = xml.xmlFileToString(inputStream);
+                String xml_line = XmlImportExport.xmlFileToString(inputStream);
                 inputStream.close();
-                MyJavaObject my = xml.xmlStringToJavaObject(xml_line);
-                tableView.getItems().add(my);
+                try {
+                    Bibliography bibliography = XmlImportExport.xmlStringToJavaObject(xml_line, Bibliography.class);
+                    for(Book book : bibliography.getMyList()) {
+                        book.setCheckBox(new CheckBox());
+                        System.out.println(book.toString());
+                        tableView.getItems().add(book);
+                    }
+                    listOpenedXml.getItems().add(selectedFile.getName());
+                } catch(UnrecognizedPropertyException e) {
+                    Alert notPickedFileAlert = new Alert(Alert.AlertType.ERROR,
+                            "This file has incorrect format", ButtonType.OK);
+                    notPickedFileAlert.showAndWait();
+                }
             }
         }
     }
 
     @FXML
     void close_xml(ActionEvent event) {
+        // TODO: obsługa wielu plików
         int index = listOpenedXml.getSelectionModel().getSelectedIndex();
         if(index!=-1) {
             buttonCloseXml.getScene().getWindow();
@@ -141,12 +170,13 @@ public class Controller {
             if(title.equals("") && author.equals("") && publisher.equals("") && year <= 0) {
                 throw new RuntimeException("Cannot add empty fields");
             }
-            MyJavaObject my = new MyJavaObject();
-            my.setTitle(title);
-            my.setAuthor(author);
-            my.setPublisher(publisher);
-            my.setYear(year);
-            tableView.getItems().add(my);
+            Book book = new Book();
+            book.setCheckBox(new CheckBox());
+            book.setTitle(title);
+            book.setAuthor(author);
+            book.setPublisher(publisher);
+            book.setYear(year);
+            tableView.getItems().add(book);
         } catch(NumberFormatException e) {
             Alert yearNotANumberAlert = new Alert(Alert.AlertType.ERROR,
                     "Wrong input: Year must be an integer value", ButtonType.OK);
@@ -172,76 +202,75 @@ public class Controller {
 
     @FXML
     void exportToFile(ActionEvent event) {
+        // TODO: obsługa wielu plików
         String extension = (String) extensionComboBox.getValue();
-        ObservableList<MyJavaObject> productsList;
+        ObservableList<Book> productsList;
         productsList = tableView.getItems();
-        MyJavaObject my = productsList.get(0);  // TODO: zmiana na czekboksy;)
+        Book book = productsList.get(0);  // TODO: zmiana na czekboksy;)
+
+        // Utworzenie okna do zapisywania pliku
         FileChooser fileChooser = new FileChooser();
-        FileChooser.ExtensionFilter extFilter = null;
-        if(extension.equals(".docx")) {
-            extFilter = new FileChooser.ExtensionFilter("docx Files", "*.docx");
-        } else if(extension.equals(".bib")) {
-            extFilter = new FileChooser.ExtensionFilter("bib Files", "*.bib");
-        } else if(extension.equals(".txt")) {
-            extFilter = new FileChooser.ExtensionFilter("txt Files", "*.txt");
-        } else if(extension.equals(".rtf")) {
-            extFilter = new FileChooser.ExtensionFilter("rtf Files", "*.rtf");
-        }
+        FileChooser.ExtensionFilter extFilter;
+        extFilter = new FileChooser.ExtensionFilter(extension + " Files", "*" + extension);
         fileChooser.getExtensionFilters().add(extFilter);
+        fileChooser.setInitialFileName("*" + extension);
         File file = fileChooser.showSaveDialog(exportSaveButton.getScene().getWindow());
+
+        // Zapisywanie pliku w określonym formacie
         if(extension.equals(".docx")) {
             DocxExport docx = new DocxExport();
-            docx.javaObjectToDocxFile(my, file.getAbsolutePath());
+            docx.javaObjectToDocxFile(book, file.getAbsolutePath());
         } else if(extension.equals(".bib")) {
             BibTeXExport rtf = new BibTeXExport();
-            rtf.javaObjectToBiBTeXFile(my, file.getAbsolutePath());
+            rtf.javaObjectToBiBTeXFile(book, file.getAbsolutePath());
         } else if(extension.equals(".txt")) {
             TxtExport txt = new TxtExport();
-            txt.javaObjectToTxtFile(my, file.getAbsolutePath());
+            txt.javaObjectToTxtFile(book, file.getAbsolutePath());
         } else if(extension.equals(".rtf")) {
             RtfExport rtf = new RtfExport();
-            rtf.javaObjectToRtfFile(my, file.getAbsolutePath());
+            rtf.javaObjectToRtfFile(book, file.getAbsolutePath());
         }
     }
 
     @FXML
     void save_xml(ActionEvent event) throws IOException {
-        ObservableList<MyJavaObject> productsList;
+        // TODO: obsługa wielu plików
+        ObservableList<Book> productsList;
         productsList = tableView.getSelectionModel().getSelectedItems();
         // getting selected object
-        MyJavaObject obj = productsList.get(0);  // TODO: zmiana na czekboksy;)
+        Book book = productsList.get(0);  // TODO: zmiana na czekboksy;)
 
         FileChooser fileChooser = new FileChooser();
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("XML Files", "*.xml");
         fileChooser.getExtensionFilters().add(extFilter);
         File file = fileChooser.showSaveDialog(buttonSaveFile.getScene().getWindow());
 
-        //MyJavaObject obj = tableView.getSelectionModel().getSelectedItem();
+        //Book book = tableView.getSelectionModel().getSelectedItem();
         XmlImportExport xml = new XmlImportExport();
-        xml.javaObjectToXmlFile(obj, file.getAbsolutePath());
+        xml.javaObjectToXmlFile(book, file.getAbsolutePath());
     }
 
     public void changeTitleCellEvent(TableColumn.CellEditEvent cellEditEvent) {
         // Zmiana wartości atrybutu title w obiekcie
-        MyJavaObject selectedObject = tableView.getSelectionModel().getSelectedItem();
+        Book selectedObject = tableView.getSelectionModel().getSelectedItem();
         selectedObject.setTitle(cellEditEvent.getNewValue().toString());
     }
 
     public void changeAuthorCellEvent(TableColumn.CellEditEvent cellEditEvent) {
         // Zmiana wartości atrybutu author w obiekcie
-        MyJavaObject selectedObject = tableView.getSelectionModel().getSelectedItem();
+        Book selectedObject = tableView.getSelectionModel().getSelectedItem();
         selectedObject.setAuthor(cellEditEvent.getNewValue().toString());
     }
 
     public void changePublisherCellEvent(TableColumn.CellEditEvent cellEditEvent) {
         // Zmiana wartości atrybutu publisher w obiekcie
-        MyJavaObject selectedObject = tableView.getSelectionModel().getSelectedItem();
+        Book selectedObject = tableView.getSelectionModel().getSelectedItem();
         selectedObject.setPublisher(cellEditEvent.getNewValue().toString());
     }
 
     public void changeYearCellEvent(TableColumn.CellEditEvent cellEditEvent) {
         // Zmiana wartości atrybutu year w obiekcie
-        MyJavaObject selectedObject = tableView.getSelectionModel().getSelectedItem();
+        Book selectedObject = tableView.getSelectionModel().getSelectedItem();
         selectedObject.setYear(Short.parseShort(cellEditEvent.getNewValue().toString()));
     }
 

@@ -1,43 +1,48 @@
 package com.bibliographicdatamaintenance;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.scene.control.CheckBox;
 
-public class MyJavaObject
+@JsonIgnoreProperties(value = {"checkBox"})
+public class Book
 {
     private SimpleStringProperty title;
     private SimpleStringProperty author;
     private SimpleStringProperty publisher;
     private short year;
-//    private CheckBox remark;
+    private CheckBox checkBox;
 
-    public MyJavaObject(SimpleStringProperty title, SimpleStringProperty author, SimpleStringProperty publisher, short year) {
+    public Book(SimpleStringProperty title, SimpleStringProperty author, SimpleStringProperty publisher, short year) {
         this.title = title;
         this.author = author;
         this.publisher = publisher;
         this.year = year;
+        this.checkBox = new CheckBox();
     }
 
-    public MyJavaObject(String newTitle, String newAuthor, String newPublisher, short newYear) {
+    public Book(String newTitle, String newAuthor, String newPublisher, short newYear) {
         this.title = new SimpleStringProperty(newTitle);
         this.author = new SimpleStringProperty(newAuthor);
         this.publisher = new SimpleStringProperty(newPublisher);
         this.year = newYear;
+        this.checkBox = new CheckBox();
     }
 
-    public MyJavaObject() {
+    public Book() {
     }
 
     public String getTitle() { return title.get();}
     public String getAuthor() { return author.get();}
     public String getPublisher() { return publisher.get();}
     public short getYear() { return year;}
-//    public CheckBox getRemark() {return remark;}
+    public CheckBox getCheckBox() { return checkBox;}
 
     public void setTitle(String newTitle) { this.title = new SimpleStringProperty(newTitle); }
     public void setAuthor(String newAuthor) { this.author = new SimpleStringProperty(newAuthor); }
     public void setPublisher(String newPublisher) { this.publisher = new SimpleStringProperty(newPublisher); }
     public void setYear(short newYear) { this.year = newYear; }
-//    public void setRemark(CheckBox remark){ this.remark = remark; }
+    public void setCheckBox(CheckBox checkBox) { this.checkBox = checkBox; }
 
     @Override
     public String toString() {

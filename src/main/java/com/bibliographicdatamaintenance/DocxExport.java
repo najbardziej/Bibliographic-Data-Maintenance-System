@@ -8,11 +8,11 @@ import org.apache.poi.xwpf.usermodel.XWPFRun;
 
 public class DocxExport {
     // from Java Object to docx file
-    public void javaObjectToDocxFile(MyJavaObject obj, String path) {
+    public void javaObjectToDocxFile(Book book, String path) {
         File file = new File(path);
         FileOutputStream fos = null;
         try {
-            fos = new FileOutputStream(new File(path));
+            fos = new FileOutputStream(file);
         } catch (FileNotFoundException e) {
             System.err.println("Error during open file");
             e.printStackTrace();
@@ -21,13 +21,13 @@ public class DocxExport {
         XWPFDocument document = new XWPFDocument();
         XWPFParagraph paragraph = document.createParagraph();
         XWPFRun run = paragraph.createRun();
-        run.setText("Title: " + obj.getTitle());
+        run.setText("Title: " + book.getTitle());
         run.addBreak();
-        run.setText("Author: " + obj.getAuthor());
+        run.setText("Author: " + book.getAuthor());
         run.addBreak();
-        run.setText("Publisher: " + obj.getPublisher());
+        run.setText("Publisher: " + book.getPublisher());
         run.addBreak();
-        run.setText("Year: " + obj.getYear());
+        run.setText("Year: " + book.getYear());
         run.addBreak();
 
         try {
