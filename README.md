@@ -18,7 +18,7 @@ Kryteria oceny:
     :heavy_check_mark: (Travis nam to zapewnia)
 
     - czy budowany jest przez Mavena wykonywalny jar możliwy do uruchomienia z konsoli systemu operacyjnego (uruchomionej poza środowiskiem deweloperskim) 
-    :x:
+    :heavy_check_mark:
 
     - czy zrealizowano co najmniej 5 przykładowych testów jednostkowych (z wyłączeniem testów warstwy danych) 
     :x:
