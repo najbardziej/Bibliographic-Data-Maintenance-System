@@ -1,4 +1,4 @@
-package sample;
+package com.bibliographicdatamaintenance;
 
 import javafx.beans.property.SimpleStringProperty;
 

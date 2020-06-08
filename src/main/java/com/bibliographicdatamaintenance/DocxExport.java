@@ -1,4 +1,4 @@
-package sample;
+package com.bibliographicdatamaintenance;
 
 import java.io.*;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;

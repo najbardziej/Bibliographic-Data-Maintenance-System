@@ -1,4 +1,4 @@
-package sample;
+package com.bibliographicdatamaintenance;
 
 import java.io.*;
 import java.util.List;
