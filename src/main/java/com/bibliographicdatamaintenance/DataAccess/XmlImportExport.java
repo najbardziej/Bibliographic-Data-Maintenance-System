@@ -1,8 +1,10 @@
-package com.bibliographicdatamaintenance;
+package com.bibliographicdatamaintenance.DataAccess;
 
 import java.io.*;
 import java.util.List;
 
+import com.bibliographicdatamaintenance.Models.Bibliography;
+import com.bibliographicdatamaintenance.Models.Book;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 
 public class XmlImportExport

@@ -7,5 +7,7 @@ module com.bibliographicdatamaintenance {
     requires com.fasterxml.jackson.dataformat.xml;
     requires jackson.annotations;
 
-    opens com.bibliographicdatamaintenance to com.fasterxml.jackson.databind, javafx.fxml, javafx.graphics, javafx.base;
+    opens com.bibliographicdatamaintenance to javafx.graphics;
+    opens com.bibliographicdatamaintenance.Models to com.fasterxml.jackson.databind, javafx.base;
+    opens com.bibliographicdatamaintenance.Controllers to javafx.fxml;
 }

@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import com.bibliographicdatamaintenance.DataAccess.XmlImportExport;
+import com.bibliographicdatamaintenance.Models.Bibliography;
+import com.bibliographicdatamaintenance.Models.Book;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -17,7 +20,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        scene = new Scene(loadFXML("sample"));
+        scene = new Scene(loadFXML("Views/MainView"));
         stage.setTitle("Bibliographic Data Maintenance");
         stage.setScene(scene);
         stage.show();

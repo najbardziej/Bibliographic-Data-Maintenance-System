@@ -1,8 +1,11 @@
-package com.bibliographicdatamaintenance;
+package com.bibliographicdatamaintenance.Controllers;
 
 import java.io.*;
 import java.util.List;
 
+import com.bibliographicdatamaintenance.DataAccess.*;
+import com.bibliographicdatamaintenance.Models.Bibliography;
+import com.bibliographicdatamaintenance.Models.Book;
 import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -16,7 +19,7 @@ import javafx.util.converter.ShortStringConverter;
 import java.lang.String;
 
 
-public class Controller {
+public class MainController {
 
     @FXML
     private Button buttonOpenXml;
