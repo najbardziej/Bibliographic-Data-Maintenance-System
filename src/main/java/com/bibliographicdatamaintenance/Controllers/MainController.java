@@ -7,6 +7,7 @@ import com.bibliographicdatamaintenance.DataAccess.*;
 import com.bibliographicdatamaintenance.Models.Bibliography;
 import com.bibliographicdatamaintenance.Models.Book;
 import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
+import javafx.beans.property.BooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -16,6 +17,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.stage.FileChooser;
 import javafx.util.converter.ShortStringConverter;
+
+import javax.swing.*;
 import java.lang.String;
 
 
@@ -200,6 +203,19 @@ public class MainController {
             Alert notPickedRecordAlert = new Alert(Alert.AlertType.ERROR,
                     "You have not chosen any record to remove", ButtonType.OK);
             notPickedRecordAlert.showAndWait();
+        }
+    }
+
+    @FXML
+    void selectAllCheckboxes(ActionEvent event){
+        ObservableList<Book> productsList;
+        productsList = tableView.getItems();
+        if(selectAllCheckbox.isSelected()){
+            for(Book book : productsList)
+                book.getCheckBox().setSelected(true);
+        }else{
+            for(Book book : productsList)
+                book.getCheckBox().setSelected(false);
         }
     }
 
