@@ -1,12 +1,14 @@
 package com.bibliographicdatamaintenance.Controllers;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.bibliographicdatamaintenance.DataAccess.*;
 import com.bibliographicdatamaintenance.Models.Bibliography;
 import com.bibliographicdatamaintenance.Models.Book;
 import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
+import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -195,14 +197,11 @@ public class MainController {
     }
 
     @FXML
-    void delete_row(ActionEvent event) {
-        int index = tableView.getSelectionModel().getSelectedIndex();
-        if(index!=-1) {
-            tableView.getItems().remove(index);
-        } else {
-            Alert notPickedRecordAlert = new Alert(Alert.AlertType.ERROR,
-                    "You have not chosen any record to remove", ButtonType.OK);
-            notPickedRecordAlert.showAndWait();
+    void delete_selected_rows(ActionEvent event) {
+        for(Book book : tableView.getItems()){
+            if(book.getCheckBox().isSelected()){
+                Platform.runLater(() -> {tableView.getItems().remove(book);});
+            }
         }
     }
 
@@ -254,19 +253,21 @@ public class MainController {
     @FXML
     void save_xml(ActionEvent event) throws IOException {
         // TODO: obsługa wielu plików
-        ObservableList<Book> productsList;
-        productsList = tableView.getSelectionModel().getSelectedItems();
-        // getting selected object
-        Book book = productsList.get(0);  // TODO: zmiana na czekboksy;)
 
         FileChooser fileChooser = new FileChooser();
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("XML Files", "*.xml");
         fileChooser.getExtensionFilters().add(extFilter);
         File file = fileChooser.showSaveDialog(buttonSaveFile.getScene().getWindow());
 
-        //Book book = tableView.getSelectionModel().getSelectedItem();
         XmlImportExport xml = new XmlImportExport();
-        xml.javaObjectToXmlFile(book, file.getAbsolutePath());
+        List<Book> bookListToRemove = new ArrayList<>();
+        for(Book book : tableView.getItems()){
+            if(book.getCheckBox().isSelected()){
+                bookListToRemove.add(book);
+            }
+        }
+        Bibliography bibliography = new Bibliography(bookListToRemove);
+        XmlImportExport.javaObjectToXmlFile(bibliography, file.getAbsolutePath());
     }
 
     public void changeTitleCellEvent(TableColumn.CellEditEvent cellEditEvent) {
