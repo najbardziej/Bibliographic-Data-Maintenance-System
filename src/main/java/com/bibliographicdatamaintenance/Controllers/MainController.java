@@ -224,8 +224,8 @@ public class MainController {
         String extension = (String) extensionComboBox.getValue();
         ObservableList<Book> productsList;
         productsList = tableView.getItems();
-        Book book = productsList.get(0);  // TODO: zmiana na czekboksy;)
-
+        //Book book = productsList.get(0);  // TODO: zmiana na czekboksy;)
+        Book bookk = productsList.get(0);
         // Utworzenie okna do zapisywania pliku
         FileChooser fileChooser = new FileChooser();
         FileChooser.ExtensionFilter extFilter;
@@ -234,19 +234,33 @@ public class MainController {
         fileChooser.setInitialFileName("*" + extension);
         File file = fileChooser.showSaveDialog(exportSaveButton.getScene().getWindow());
 
+        XmlImportExport xml = new XmlImportExport();
+        List<Book> bookListToExport = new ArrayList<>();
+        for(Book book : tableView.getItems()){
+            if(book.getCheckBox().isSelected()){
+                bookListToExport.add(book);
+            }
+        }
+        //Bibliography bibliography = new Bibliography(bookListToExport);
+        //XmlImportExport.javaObjectToXmlFile(bibliography, file.getAbsolutePath());
+
         // Zapisywanie pliku w określonym formacie
         if(extension.equals(".docx")) {
             DocxExport docx = new DocxExport();
-            docx.javaObjectToDocxFile(book, file.getAbsolutePath());
+            docx.javaObjectToDocxFile(bookListToExport, file.getAbsolutePath());
+            //
         } else if(extension.equals(".bib")) {
             BibTeXExport rtf = new BibTeXExport();
-            rtf.javaObjectToBiBTeXFile(book, file.getAbsolutePath());
+            rtf.javaObjectToBiBTeXFile(bookListToExport, file.getAbsolutePath());
+            //rtf.javaObjectToBiBTeXFile(book, file.getAbsolutePath());
         } else if(extension.equals(".txt")) {
             TxtExport txt = new TxtExport();
-            txt.javaObjectToTxtFile(book, file.getAbsolutePath());
+            txt.javaObjectToTxtFile(bookListToExport, file.getAbsolutePath());
+            //txt.javaObjectToTxtFile(book, file.getAbsolutePath());
         } else if(extension.equals(".rtf")) {
             RtfExport rtf = new RtfExport();
-            rtf.javaObjectToRtfFile(book, file.getAbsolutePath());
+            rtf.javaObjectToRtfFile(bookListToExport, file.getAbsolutePath());
+            //rtf.javaObjectToRtfFile(book, file.getAbsolutePath());
         }
     }
 
