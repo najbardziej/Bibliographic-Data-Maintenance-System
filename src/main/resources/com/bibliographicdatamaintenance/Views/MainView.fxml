@@ -50,13 +50,13 @@
                         <Button fx:id="buttonOpenXml" defaultButton="true" mnemonicParsing="false" onAction="#open_xml" text="Open XML" textOverrun="CLIP" />
                         <Button fx:id="buttonCloseXml" defaultButton="false" mnemonicParsing="false" onAction="#close_xml" text="Close XML" textOverrun="CLIP" />
                         <Button fx:id="buttonSaveFile" layoutX="286.0" layoutY="10.0" mnemonicParsing="false" onAction="#save_xml" text="Save current file" />
-                        <CheckBox fx:id="selectAllCheckbox" mnemonicParsing="false" text="Select all">
+                        <CheckBox fx:id="selectAllCheckbox" mnemonicParsing="false" onAction="#selectAllCheckboxes" text="Select all">
                             <HBox.margin>
                                 <Insets top="4.0" />
                             </HBox.margin>
                         </CheckBox>
                   <Region HBox.hgrow="ALWAYS" />
-                        <Button fx:id="deleteRow" mnemonicParsing="false" onAction="#delete_row" text="Delete row" textOverrun="CLIP" BorderPane.alignment="TOP_RIGHT" />
+                        <Button fx:id="deleteRow" mnemonicParsing="false" onAction="#delete_selected_rows" text="Delete selected rows" textOverrun="CLIP" BorderPane.alignment="TOP_RIGHT" />
                     </children>
                     <VBox.margin>
                         <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />

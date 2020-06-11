@@ -1,12 +1,15 @@
 package com.bibliographicdatamaintenance.Controllers;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.bibliographicdatamaintenance.DataAccess.*;
 import com.bibliographicdatamaintenance.Models.Bibliography;
 import com.bibliographicdatamaintenance.Models.Book;
 import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
+import javafx.application.Platform;
+import javafx.beans.property.BooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -16,6 +19,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.stage.FileChooser;
 import javafx.util.converter.ShortStringConverter;
+
+import javax.swing.*;
 import java.lang.String;
 
 
@@ -192,14 +197,24 @@ public class MainController {
     }
 
     @FXML
-    void delete_row(ActionEvent event) {
-        int index = tableView.getSelectionModel().getSelectedIndex();
-        if(index!=-1) {
-            tableView.getItems().remove(index);
-        } else {
-            Alert notPickedRecordAlert = new Alert(Alert.AlertType.ERROR,
-                    "You have not chosen any record to remove", ButtonType.OK);
-            notPickedRecordAlert.showAndWait();
+    void delete_selected_rows(ActionEvent event) {
+        for(Book book : tableView.getItems()){
+            if(book.getCheckBox().isSelected()){
+                Platform.runLater(() -> {tableView.getItems().remove(book);});
+            }
+        }
+    }
+
+    @FXML
+    void selectAllCheckboxes(ActionEvent event){
+        ObservableList<Book> productsList;
+        productsList = tableView.getItems();
+        if(selectAllCheckbox.isSelected()){
+            for(Book book : productsList)
+                book.getCheckBox().setSelected(true);
+        }else{
+            for(Book book : productsList)
+                book.getCheckBox().setSelected(false);
         }
     }
 
@@ -209,8 +224,8 @@ public class MainController {
         String extension = (String) extensionComboBox.getValue();
         ObservableList<Book> productsList;
         productsList = tableView.getItems();
-        Book book = productsList.get(0);  // TODO: zmiana na czekboksy;)
-
+        //Book book = productsList.get(0);  // TODO: zmiana na czekboksy;)
+        Book bookk = productsList.get(0);
         // Utworzenie okna do zapisywania pliku
         FileChooser fileChooser = new FileChooser();
         FileChooser.ExtensionFilter extFilter;
@@ -219,38 +234,54 @@ public class MainController {
         fileChooser.setInitialFileName("*" + extension);
         File file = fileChooser.showSaveDialog(exportSaveButton.getScene().getWindow());
 
+        XmlImportExport xml = new XmlImportExport();
+        List<Book> bookListToExport = new ArrayList<>();
+        for(Book book : tableView.getItems()){
+            if(book.getCheckBox().isSelected()){
+                bookListToExport.add(book);
+            }
+        }
+        //Bibliography bibliography = new Bibliography(bookListToExport);
+        //XmlImportExport.javaObjectToXmlFile(bibliography, file.getAbsolutePath());
+
         // Zapisywanie pliku w określonym formacie
         if(extension.equals(".docx")) {
             DocxExport docx = new DocxExport();
-            docx.javaObjectToDocxFile(book, file.getAbsolutePath());
+            docx.javaObjectToDocxFile(bookListToExport, file.getAbsolutePath());
+            //
         } else if(extension.equals(".bib")) {
             BibTeXExport rtf = new BibTeXExport();
-            rtf.javaObjectToBiBTeXFile(book, file.getAbsolutePath());
+            rtf.javaObjectToBiBTeXFile(bookListToExport, file.getAbsolutePath());
+            //rtf.javaObjectToBiBTeXFile(book, file.getAbsolutePath());
         } else if(extension.equals(".txt")) {
             TxtExport txt = new TxtExport();
-            txt.javaObjectToTxtFile(book, file.getAbsolutePath());
+            txt.javaObjectToTxtFile(bookListToExport, file.getAbsolutePath());
+            //txt.javaObjectToTxtFile(book, file.getAbsolutePath());
         } else if(extension.equals(".rtf")) {
             RtfExport rtf = new RtfExport();
-            rtf.javaObjectToRtfFile(book, file.getAbsolutePath());
+            rtf.javaObjectToRtfFile(bookListToExport, file.getAbsolutePath());
+            //rtf.javaObjectToRtfFile(book, file.getAbsolutePath());
         }
     }
 
     @FXML
     void save_xml(ActionEvent event) throws IOException {
         // TODO: obsługa wielu plików
-        ObservableList<Book> productsList;
-        productsList = tableView.getSelectionModel().getSelectedItems();
-        // getting selected object
-        Book book = productsList.get(0);  // TODO: zmiana na czekboksy;)
 
         FileChooser fileChooser = new FileChooser();
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("XML Files", "*.xml");
         fileChooser.getExtensionFilters().add(extFilter);
         File file = fileChooser.showSaveDialog(buttonSaveFile.getScene().getWindow());
 
-        //Book book = tableView.getSelectionModel().getSelectedItem();
         XmlImportExport xml = new XmlImportExport();
-        xml.javaObjectToXmlFile(book, file.getAbsolutePath());
+        List<Book> bookListToRemove = new ArrayList<>();
+        for(Book book : tableView.getItems()){
+            if(book.getCheckBox().isSelected()){
+                bookListToRemove.add(book);
+            }
+        }
+        Bibliography bibliography = new Bibliography(bookListToRemove);
+        XmlImportExport.javaObjectToXmlFile(bibliography, file.getAbsolutePath());
     }
 
     public void changeTitleCellEvent(TableColumn.CellEditEvent cellEditEvent) {
