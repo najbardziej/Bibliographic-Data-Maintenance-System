@@ -40,7 +40,12 @@ public class Book
     public String getPublisher() { return publisher.get();}
     public short getYear() { return year;}
     public CheckBox getCheckBox() { return checkBox;}
-    public String getFilename() { return filename.get();}
+    public String getFilename() {
+        if (filename != null)
+            return filename.get();
+        else
+            return "";
+    }
 
     public void setTitle(String newTitle) { this.title = new SimpleStringProperty(newTitle); }
     public void setAuthor(String newAuthor) { this.author = new SimpleStringProperty(newAuthor); }
