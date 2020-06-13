@@ -90,7 +90,7 @@ public class MainController {
 
     @FXML
     public void initialize() {
-         // Zaznaczanie wierszy
+        // Zaznaczanie wierszy
         TableView.TableViewSelectionModel selectionModel = tableView.getSelectionModel();
         selectionModel.setSelectionMode(SelectionMode.MULTIPLE);
 
@@ -99,7 +99,7 @@ public class MainController {
 //                new Book(new CheckBox(), "t", "a", "w", (short)2)
 //        );
 
-       // Określenie, która kolumna zawiera określony atrybut obiektu
+        // Określenie, która kolumna zawiera określony atrybut obiektu
         tableViewSelectColumn.setCellValueFactory(new PropertyValueFactory<>("checkBox"));
         tableViewTitleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
         tableViewAuthorColumn.setCellValueFactory(new PropertyValueFactory<>("author"));
@@ -139,7 +139,8 @@ public class MainController {
                     Bibliography bibliography = XmlImportExport.xmlStringToJavaObject(xml_line);
                     for(Book book : bibliography.getMyList()) {
                         book.setCheckBox(new CheckBox());
-                        System.out.println(book.toString());
+                        book.setFilename(selectedFile.getName());
+                        System.out.println(book.toString());  // TODO: usunąć
                         tableView.getItems().add(book);
                     }
                     listOpenedXml.getItems().add(selectedFile.getName());
@@ -154,12 +155,15 @@ public class MainController {
 
     @FXML
     void close_xml(ActionEvent event) {
-        // TODO: obsługa wielu plików
-        int index = listOpenedXml.getSelectionModel().getSelectedIndex();
-        if(index!=-1) {
-            buttonCloseXml.getScene().getWindow();
-            listOpenedXml.getItems().remove(index);
-            tableView.getItems().remove(index);
+        int indexOfFileToClose = listOpenedXml.getSelectionModel().getSelectedIndex();
+        String fileToClose = listOpenedXml.getSelectionModel().getSelectedItem();
+        if (fileToClose != null) {
+            for (Book book : tableView.getItems()) {
+                if (book.getFilename().equals(fileToClose)) {
+                    Platform.runLater(() -> tableView.getItems().remove(book));
+                }
+            }
+            listOpenedXml.getItems().remove(indexOfFileToClose);
         } else {
             Alert notPickedFileAlert = new Alert(Alert.AlertType.ERROR,
                     "You have not chosen any file to close", ButtonType.OK);
@@ -200,7 +204,7 @@ public class MainController {
     void delete_selected_rows(ActionEvent event) {
         for(Book book : tableView.getItems()) {
             if(book.getCheckBox().isSelected()) {
-                Platform.runLater(() -> {tableView.getItems().remove(book);});
+                Platform.runLater(() -> tableView.getItems().remove(book));
             }
         }
     }
@@ -259,13 +263,13 @@ public class MainController {
         fileChooser.getExtensionFilters().add(extFilter);
         File file = fileChooser.showSaveDialog(buttonSaveFile.getScene().getWindow());
 
-        List<Book> bookListToRemove = new ArrayList<>();
+        List<Book> bookListToSave = new ArrayList<>();
         for(Book book : tableView.getItems()) {
             if(book.getCheckBox().isSelected()) {
-                bookListToRemove.add(book);
+                bookListToSave.add(book);
             }
         }
-        Bibliography bibliography = new Bibliography(bookListToRemove);
+        Bibliography bibliography = new Bibliography(bookListToSave);
         XmlImportExport.javaObjectToXmlFile(bibliography, file.getAbsolutePath());
     }
 
