@@ -1,28 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.String?>
-<?import javafx.collections.FXCollections?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
-<?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.Tab?>
-<?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bibliographicdatamaintenance.Controllers.MainController">
+<BorderPane fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="600.0" minWidth="800.0" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bibliographicdatamaintenance.Controllers.MainController">
     <top>
         <VBox BorderPane.alignment="CENTER">
             <children>
@@ -47,16 +45,24 @@
                 </MenuBar>
                 <HBox spacing="10.0">
                     <children>
-                        <Button fx:id="buttonOpenXml" defaultButton="true" mnemonicParsing="false" onAction="#open_xml" text="Open XML" textOverrun="CLIP" />
-                        <Button fx:id="buttonCloseXml" defaultButton="false" mnemonicParsing="false" onAction="#close_xml" text="Close XML" textOverrun="CLIP" />
-                        <Button fx:id="buttonSaveFile" layoutX="286.0" layoutY="10.0" mnemonicParsing="false" onAction="#save_xml" text="Save current file" />
+                        <Button fx:id="buttonOpenXml" defaultButton="true" mnemonicParsing="false" onAction="#openXml" text="Open XML" textOverrun="CLIP" />
+                        <Button fx:id="buttonCloseXml" defaultButton="false" mnemonicParsing="false" onAction="#closeXml" text="Close XML" textOverrun="CLIP" />
+                        <Button fx:id="buttonSaveFile" layoutX="286.0" layoutY="10.0" mnemonicParsing="false" onAction="#saveXml" text="Save to XML" />
+                  <MenuButton fx:id="buttonExportFile" mnemonicParsing="false" text="Export to file">
+                    <items>
+                      <MenuItem fx:id="menuButtonExportToBib" mnemonicParsing="false" onAction="#exportToBib" text=".bib" />
+                      <MenuItem fx:id="menuButtonExportToDocx" mnemonicParsing="false" onAction="#exportToDocx" text=".docx" />
+                        <MenuItem fx:id="menuButtonExportToRtf" mnemonicParsing="false" onAction="#exportToRtf" text=".rtf" />
+                        <MenuItem fx:id="menuButtonExportToTxt" mnemonicParsing="false" onAction="#exportToTxt" text=".txt" />
+                    </items>
+                  </MenuButton>
                         <CheckBox fx:id="selectAllCheckbox" mnemonicParsing="false" onAction="#selectAllCheckboxes" text="Select all">
                             <HBox.margin>
                                 <Insets top="4.0" />
                             </HBox.margin>
                         </CheckBox>
                   <Region HBox.hgrow="ALWAYS" />
-                        <Button fx:id="deleteRow" mnemonicParsing="false" onAction="#delete_selected_rows" text="Delete selected rows" textOverrun="CLIP" BorderPane.alignment="TOP_RIGHT" />
+                        <Button fx:id="deleteRow" mnemonicParsing="false" onAction="#deleteSelectedRows" text="Delete selected rows" textOverrun="CLIP" BorderPane.alignment="TOP_RIGHT" />
                     </children>
                     <VBox.margin>
                         <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
@@ -66,7 +72,7 @@
         </VBox>
     </top>
     <center>
-        <TableView fx:id="tableView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+        <TableView fx:id="tableView" prefHeight="300.0" prefWidth="200.0" BorderPane.alignment="CENTER">
             <columns>
                 <TableColumn fx:id="tableViewSelectColumn" prefWidth="30.0" />
                 <TableColumn fx:id="tableViewTitleColumn" onEditCommit="#changeTitleCellEvent" prefWidth="200.0" text="Title" />
@@ -77,52 +83,51 @@
         </TableView>
     </center>
     <bottom>
-        <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
-            <tabs>
-                <Tab text="Add">
-                    <content>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                            <children>
-                                <Label layoutX="50.0" layoutY="29.0" text="Title" />
-                                <Label layoutX="44.0" layoutY="61.0" text="Author" />
-                                <Label layoutX="38.0" layoutY="92.0" text="Publisher" />
-                                <Label layoutX="50.0" layoutY="129.0" text="Year" />
-                                <TextField fx:id="titleTextFieldToAdd" layoutX="107.0" layoutY="25.0" prefHeight="24.0" prefWidth="564.0" AnchorPane.bottomAnchor="123.0" AnchorPane.leftAnchor="107.0" AnchorPane.rightAnchor="77.0" AnchorPane.topAnchor="25.0" />
-                                <TextField fx:id="authorTextFieldToAdd" layoutX="107.0" layoutY="57.0" prefHeight="24.0" prefWidth="564.0" AnchorPane.leftAnchor="107.0" AnchorPane.rightAnchor="77.0" AnchorPane.topAnchor="57.0" />
-                                <TextField fx:id="publisherTextFieldToAdd" layoutX="107.0" layoutY="88.0" prefHeight="24.0" prefWidth="564.0" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="107.0" AnchorPane.rightAnchor="77.0" AnchorPane.topAnchor="88.0" />
-                                <TextField fx:id="yearTextFieldToAdd" layoutX="107.0" layoutY="125.0" prefHeight="24.0" prefWidth="529.0" AnchorPane.bottomAnchor="23.0" AnchorPane.leftAnchor="107.0" AnchorPane.rightAnchor="77.0" AnchorPane.topAnchor="125.0" />
-                                <Button layoutX="689.0" layoutY="125.0" mnemonicParsing="false" onAction="#add_record" text="Add" AnchorPane.rightAnchor="22.0" />
-                            </children>
-                        </AnchorPane>
-                    </content>
-                </Tab>
-                <Tab fx:id="exportTab" text="Export">
-                    <content>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                            <children>
-                                <ComboBox fx:id="extensionComboBox" layoutX="350.0" layoutY="46.0" prefWidth="150.0" AnchorPane.rightAnchor="300.0" AnchorPane.topAnchor="46.0">
-                                    <items>
-                                        <FXCollections fx:factory="observableArrayList">
-                                            <String fx:value=".bib" />
-                                            <String fx:value=".rtf" />
-                                            <String fx:value=".docx" />
-                                            <String fx:value=".txt" />
-                                        </FXCollections>
-                                    </items>
-                                    <value>
-                                        <String fx:value=".docx" />
-                                    </value>
-                                </ComboBox>
-                                <Label layoutX="384.0" layoutY="22.0" text="  Choose extension: " AnchorPane.rightAnchor="318.0" AnchorPane.topAnchor="22.0" />
-                                <Button fx:id="exportSaveButton" layoutX="500.0" layoutY="46.0" mnemonicParsing="false" onAction="#exportToFile" text="Save" AnchorPane.rightAnchor="261.0" AnchorPane.topAnchor="46.0" />
-                            </children>
-                        </AnchorPane>
-                    </content>
-                </Tab>
-            </tabs>
-        </TabPane>
+            <AnchorPane prefHeight="50.0">
+                <children>
+            <GridPane prefHeight="50.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="152.0" minWidth="10.0" prefWidth="120.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                          <TextField fx:id="titleTextFieldToAdd" promptText="Title">
+                     <GridPane.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </GridPane.margin>
+                  </TextField>
+                          <TextField fx:id="authorTextFieldToAdd" promptText="Author" GridPane.columnIndex="1">
+                     <GridPane.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </GridPane.margin>
+                  </TextField>
+                          <TextField fx:id="publisherTextFieldToAdd" promptText="Publisher" GridPane.columnIndex="2">
+                     <GridPane.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </GridPane.margin>
+                  </TextField>
+                          <TextField fx:id="yearTextFieldToAdd" promptText="Year" GridPane.columnIndex="3">
+                     <GridPane.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </GridPane.margin>
+                  </TextField>
+                          <Button mnemonicParsing="false" onAction="#addRecordToTable" text="Add record" GridPane.columnIndex="4" GridPane.halignment="RIGHT">
+                     <GridPane.margin>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </GridPane.margin>
+                  </Button>
+               </children>
+            </GridPane>
+                </children>
+            </AnchorPane>
     </bottom>
     <left>
-        <ListView fx:id="listOpenedXml" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+        <ListView fx:id="listOpenedXml" prefHeight="300.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
     </left>
 </BorderPane>
