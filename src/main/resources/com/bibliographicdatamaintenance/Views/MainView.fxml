@@ -11,6 +11,7 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -28,26 +29,45 @@
                     <menus>
                         <Menu mnemonicParsing="false" text="File">
                             <items>
-                                <MenuItem mnemonicParsing="false" text="Close" />
+                        <MenuItem mnemonicParsing="false" onAction="#openXml" text="Open XML file" />
+                        <MenuItem mnemonicParsing="false" onAction="#saveXml" text="Save selected rows to XML" />
+                        <Menu mnemonicParsing="false" text="Export selected rows to file">
+                          <items>
+                            <MenuItem mnemonicParsing="false" onAction="#exportToBib" text=".bib" />
+                              <MenuItem mnemonicParsing="false" onAction="#exportToDocx" text=".docx" />
+                              <MenuItem mnemonicParsing="false" onAction="#exportToRtf" text=".rtf" />
+                              <MenuItem mnemonicParsing="false" onAction="#exportToTxt" text=".txt" />
+                          </items>
+                        </Menu>
+                        <MenuItem mnemonicParsing="false" onAction="#closeXml" text="Close selected XML file" />
                             </items>
                         </Menu>
                         <Menu mnemonicParsing="false" text="Edit">
                             <items>
-                                <MenuItem mnemonicParsing="false" text="Delete" />
+                        <MenuItem mnemonicParsing="false" onAction="#deleteSelectedRows" text="Delete selected rows" />
                             </items>
                         </Menu>
                         <Menu mnemonicParsing="false" text="Help">
                             <items>
-                                <MenuItem mnemonicParsing="false" text="About" />
+                                <MenuItem mnemonicParsing="false" onAction="#showAbout" text="About" />
                             </items>
                         </Menu>
                     </menus>
                 </MenuBar>
                 <HBox spacing="10.0">
                     <children>
-                        <Button fx:id="buttonOpenXml" defaultButton="true" mnemonicParsing="false" onAction="#openXml" text="Open XML" textOverrun="CLIP" />
-                        <Button fx:id="buttonCloseXml" defaultButton="false" mnemonicParsing="false" onAction="#closeXml" text="Close XML" textOverrun="CLIP" />
-                        <Button fx:id="buttonSaveFile" layoutX="286.0" layoutY="10.0" mnemonicParsing="false" onAction="#saveXml" text="Save to XML" />
+                        <Button fx:id="buttonOpenXml" defaultButton="true" mnemonicParsing="false" onAction="#openXml" text="Open XML" textOverrun="CLIP">
+                     <tooltip>
+                        <Tooltip text="Open XML file" />
+                     </tooltip></Button>
+                        <Button fx:id="buttonCloseXml" defaultButton="false" mnemonicParsing="false" onAction="#closeXml" text="Close XML" textOverrun="CLIP">
+                     <tooltip>
+                        <Tooltip text="Close selected XML file" />
+                     </tooltip></Button>
+                        <Button fx:id="buttonSaveFile" layoutX="286.0" layoutY="10.0" mnemonicParsing="false" onAction="#saveXml" text="Save to XML">
+                     <tooltip>
+                        <Tooltip text="Save selected rows to XML" />
+                     </tooltip></Button>
                   <MenuButton fx:id="buttonExportFile" mnemonicParsing="false" text="Export to file">
                     <items>
                       <MenuItem fx:id="menuButtonExportToBib" mnemonicParsing="false" onAction="#exportToBib" text=".bib" />
@@ -55,6 +75,9 @@
                         <MenuItem fx:id="menuButtonExportToRtf" mnemonicParsing="false" onAction="#exportToRtf" text=".rtf" />
                         <MenuItem fx:id="menuButtonExportToTxt" mnemonicParsing="false" onAction="#exportToTxt" text=".txt" />
                     </items>
+                     <tooltip>
+                        <Tooltip text="Export selected rows to file" />
+                     </tooltip>
                   </MenuButton>
                         <CheckBox fx:id="selectAllCheckbox" mnemonicParsing="false" onAction="#selectAllCheckboxes" text="Select all">
                             <HBox.margin>
@@ -72,7 +95,7 @@
         </VBox>
     </top>
     <center>
-        <TableView fx:id="tableView" prefHeight="300.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+        <TableView fx:id="tableViewBooks" prefHeight="300.0" prefWidth="200.0" BorderPane.alignment="CENTER">
             <columns>
                 <TableColumn fx:id="tableViewSelectColumn" prefWidth="30.0" />
                 <TableColumn fx:id="tableViewTitleColumn" onEditCommit="#changeTitleCellEvent" prefWidth="200.0" text="Title" />

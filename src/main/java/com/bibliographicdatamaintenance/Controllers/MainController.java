@@ -20,6 +20,7 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
 import javafx.util.converter.ShortStringConverter;
+import javafx.scene.control.TableColumn.*;
 
 
 public class MainController {
@@ -58,7 +59,7 @@ public class MainController {
     private CheckBox selectAllCheckbox;
 
     @FXML
-    private TableView<Book> tableView;
+    private TableView<Book> tableViewBooks;
 
     @FXML
     private TableColumn<Book, CheckBox> tableViewSelectColumn;
@@ -91,12 +92,6 @@ public class MainController {
     private TextField fileNameTextBox;
 
     @FXML
-    private ComboBox<?> extensionComboBox;
-
-    @FXML
-    private Button exportSaveButton;
-
-    @FXML
     private ListView<String> listOpenedXml;
 
     @FXML
@@ -107,7 +102,7 @@ public class MainController {
     @FXML
     public void initialize() {
         // Zaznaczanie wierszy
-        TableView.TableViewSelectionModel selectionModel = tableView.getSelectionModel();
+        TableView.TableViewSelectionModel selectionModel = tableViewBooks.getSelectionModel();
         selectionModel.setSelectionMode(SelectionMode.MULTIPLE);
 
         // Określenie, która kolumna zawiera określony atrybut obiektu
@@ -118,12 +113,13 @@ public class MainController {
         tableViewYearColumn.setCellValueFactory(new PropertyValueFactory<>("year"));
 
         // Umożliwienie edycji kolumn w TableView
-        tableView.setEditable(true);
+        tableViewBooks.setEditable(true);
         tableViewTitleColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         tableViewAuthorColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         tableViewPublisherColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         tableViewYearColumn.setCellFactory(TextFieldTableCell.forTableColumn(new ShortStringConverter()));
     }
+
 
     @FXML
     void openXml(ActionEvent event) throws IOException {
@@ -136,7 +132,7 @@ public class MainController {
         // Pokazanie okna i zwrócenie wybranego pliku do zmiennej
         List<File> fileList;
         try {
-            fileList = fileChooser.showOpenMultipleDialog(buttonOpenXml.getScene().getWindow());
+            fileList = fileChooser.showOpenMultipleDialog(borderPane.getScene().getWindow());
             for(File selectedFile : fileList) {
                 // Konwersja z pliku .xml do obiektu
                 InputStream inputStream = new FileInputStream(selectedFile);
@@ -146,8 +142,8 @@ public class MainController {
                     Bibliography bibliography = XmlImportExport.xmlStringToJavaObject(xml_line);
                     for(Book book : bibliography.getMyList()) {
                         book.setCheckBox(new CheckBox());
-                        System.out.println(book.toString());
-                        tableView.getItems().add(book);
+                        book.setFilename(selectedFile.getName());
+                        tableViewBooks.getItems().add(book);
                     }
                     listOpenedXml.getItems().add(selectedFile.getName());
                 } catch(UnrecognizedPropertyException e) {
@@ -161,14 +157,15 @@ public class MainController {
         }
     }
 
+
     @FXML
     void closeXml(ActionEvent event) {
         int indexOfFileToClose = listOpenedXml.getSelectionModel().getSelectedIndex();
         String fileToClose = listOpenedXml.getSelectionModel().getSelectedItem();
         if (fileToClose != null) {
-            for (Book book : tableView.getItems()) {
+            for (Book book : tableViewBooks.getItems()) {
                 if (book.getFilename().equals(fileToClose)) {
-                    Platform.runLater(() -> tableView.getItems().remove(book));
+                    Platform.runLater(() -> tableViewBooks.getItems().remove(book));
                 }
             }
             listOpenedXml.getItems().remove(indexOfFileToClose);
@@ -179,56 +176,45 @@ public class MainController {
         }
     }
 
-    @FXML
-    void addRecordToTable(ActionEvent event) {
-        String title = titleTextFieldToAdd.getText();
-        String author = authorTextFieldToAdd.getText();
-        String publisher = publisherTextFieldToAdd.getText();
-        short year;
-        try {
-            year = Short.parseShort(yearTextFieldToAdd.getText());
-            if(title.equals("") && author.equals("") && publisher.equals("") && year <= 0) {
-                throw new RuntimeException("Cannot add empty fields");
-            }
-            Book book = new Book();
-            book.setCheckBox(new CheckBox());
-            book.setTitle(title);
-            book.setAuthor(author);
-            book.setPublisher(publisher);
-            book.setYear(year);
-            tableView.getItems().add(book);
-        } catch(NumberFormatException e) {
-            Alert yearNotANumberAlert = new Alert(Alert.AlertType.ERROR,
-                    "Wrong input: Year must be an integer value", ButtonType.OK);
-            yearNotANumberAlert.showAndWait();
-        } catch(RuntimeException e) {
-            Alert emptyFieldsAlert = new Alert(Alert.AlertType.ERROR,
-                    "Wrong input: At least one field must be filled", ButtonType.OK);
-            emptyFieldsAlert.showAndWait();
-        }
+
+    File chooseOutputFile(String extension) {
+        FileChooser fileChooser = new FileChooser();
+        FileChooser.ExtensionFilter extFilter;
+        extFilter = new FileChooser.ExtensionFilter(extension + " Files", "*" + extension);
+        fileChooser.getExtensionFilters().add(extFilter);
+        fileChooser.setInitialFileName("*" + extension);
+        return fileChooser.showSaveDialog(borderPane.getScene().getWindow());
     }
 
-    @FXML
-    void deleteSelectedRows(ActionEvent event) {
-        for(Book book : tableView.getItems()) {
+    List<Book> createListOfSelectedBooks() {
+        List<Book> selectedBooks = new ArrayList<>();
+        for(Book book : tableViewBooks.getItems()) {
             if(book.getCheckBox().isSelected()) {
-                Platform.runLater(() -> tableView.getItems().remove(book));
+                selectedBooks.add(book);
             }
         }
+        return selectedBooks;
     }
 
     @FXML
-    void selectAllCheckboxes(ActionEvent event) {
-        ObservableList<Book> productsList;
-        productsList = tableView.getItems();
-        if(selectAllCheckbox.isSelected()) {
-            for(Book book : productsList)
-                book.getCheckBox().setSelected(true);
+    void saveXml(ActionEvent event) throws IOException {
+        List<Book> bookListToSave = createListOfSelectedBooks();
+        if (bookListToSave.size() > 0) {
+            File file;
+            try {
+                file = chooseOutputFile(".xml");
+                Bibliography bibliography = new Bibliography(bookListToSave);
+                XmlImportExport.javaObjectToXmlFile(bibliography, file.getAbsolutePath());
+            } catch(NullPointerException e) {
+                System.out.println("Nie wybrano pliku");
+            }
         } else {
-            for(Book book : productsList)
-                book.getCheckBox().setSelected(false);
+            Alert notSelectAnyRowAlert = new Alert(Alert.AlertType.ERROR,
+                    "You have not chosen any book. Use checkbox to select any book.", ButtonType.OK);
+            notSelectAnyRowAlert.showAndWait();
         }
     }
+
 
     @FXML
     void exportToBib(ActionEvent event) {
@@ -252,87 +238,126 @@ public class MainController {
 
     @FXML
     void exportToFile(String extension) {
-        File file;
-        try {
-            file = chooseOutputFile(extension);
-        } catch(NullPointerException e) {
-            System.out.println("Nie wybrano pliku");
-            return;
-        }
         List<Book> bookListToExport = createListOfSelectedBooks();
 
         // Zapisywanie pliku w określonym formacie
-        if(extension.equals(".docx")) {
-            DocxExport docx = new DocxExport();
-            docx.javaObjectToDocxFile(bookListToExport, file.getAbsolutePath());
-        } else if(extension.equals(".bib")) {
-            BibTeXExport rtf = new BibTeXExport();
-            rtf.javaObjectToBiBTeXFile(bookListToExport, file.getAbsolutePath());
-        } else if(extension.equals(".txt")) {
-            TxtExport txt = new TxtExport();
-            txt.javaObjectToTxtFile(bookListToExport, file.getAbsolutePath());
-        } else if(extension.equals(".rtf")) {
-            RtfExport rtf = new RtfExport();
-            rtf.javaObjectToRtfFile(bookListToExport, file.getAbsolutePath());
-        }
-    }
-
-    File chooseOutputFile(String extension) {
-        FileChooser fileChooser = new FileChooser();
-        FileChooser.ExtensionFilter extFilter;
-        extFilter = new FileChooser.ExtensionFilter(extension + " Files", "*" + extension);
-        fileChooser.getExtensionFilters().add(extFilter);
-        fileChooser.setInitialFileName("*" + extension);
-        return fileChooser.showSaveDialog(borderPane.getScene().getWindow());
-    }
-
-    List<Book> createListOfSelectedBooks() {
-        List<Book> selectedBooks = new ArrayList<>();
-        for(Book book : tableView.getItems()) {
-            if(book.getCheckBox().isSelected()) {
-                selectedBooks.add(book);
+        if (bookListToExport.size() > 0) {
+            File file;
+            try {
+                file = chooseOutputFile(extension);
+                if(extension.equals(".docx")) {
+                    DocxExport docx = new DocxExport();
+                    docx.javaObjectToDocxFile(bookListToExport, file.getAbsolutePath());
+                } else if(extension.equals(".bib")) {
+                    BibTeXExport rtf = new BibTeXExport();
+                    rtf.javaObjectToBiBTeXFile(bookListToExport, file.getAbsolutePath());
+                } else if(extension.equals(".txt")) {
+                    TxtExport txt = new TxtExport();
+                    txt.javaObjectToTxtFile(bookListToExport, file.getAbsolutePath());
+                } else if(extension.equals(".rtf")) {
+                    RtfExport rtf = new RtfExport();
+                    rtf.javaObjectToRtfFile(bookListToExport, file.getAbsolutePath());
+                }
+            } catch(NullPointerException e) {
+                System.out.println("Nie wybrano pliku");
             }
+        } else {
+            Alert notSelectAnyRowAlert = new Alert(Alert.AlertType.ERROR,
+                    "You have not chosen any book. Use checkbox to select any book.", ButtonType.OK);
+            notSelectAnyRowAlert.showAndWait();
         }
-        return selectedBooks;
     }
+
 
     @FXML
-    void saveXml(ActionEvent event) throws IOException {
-        File file;
-        try {
-            file = chooseOutputFile(".xml");
-        } catch(NullPointerException e) {
-            System.out.println("Nie wybrano pliku");
-            return;
+    void selectAllCheckboxes(ActionEvent event) {
+        ObservableList<Book> productsList;
+        productsList = tableViewBooks.getItems();
+        if(selectAllCheckbox.isSelected()) {
+            for(Book book : productsList)
+                book.getCheckBox().setSelected(true);
+        } else {
+            for(Book book : productsList)
+                book.getCheckBox().setSelected(false);
         }
-        List<Book> bookListToSave = createListOfSelectedBooks();
-
-        Bibliography bibliography = new Bibliography(bookListToSave);
-        XmlImportExport.javaObjectToXmlFile(bibliography, file.getAbsolutePath());
     }
 
-    public void changeTitleCellEvent(TableColumn.CellEditEvent cellEditEvent) {
+
+    @FXML
+    void deleteSelectedRows(ActionEvent event) {
+        int selectedRows = 0;
+        for(Book book : tableViewBooks.getItems()) {
+            if(book.getCheckBox().isSelected()) {
+                Platform.runLater(() -> tableViewBooks.getItems().remove(book));
+                selectedRows++;
+            }
+        }
+        if (selectedRows == 0) {
+            Alert notSelectAnyRowAlert = new Alert(Alert.AlertType.ERROR,
+                    "You have not chosen any book. Use checkbox to select any book.", ButtonType.OK);
+            notSelectAnyRowAlert.showAndWait();
+        }
+    }
+
+
+    @FXML
+    void addRecordToTable(ActionEvent event) {
+        String title = titleTextFieldToAdd.getText();
+        String author = authorTextFieldToAdd.getText();
+        String publisher = publisherTextFieldToAdd.getText();
+        short year;
+        try {
+            year = Short.parseShort(yearTextFieldToAdd.getText());
+            if(title.equals("") && author.equals("") && publisher.equals("") && year <= 0) {
+                throw new RuntimeException("Cannot add empty fields");
+            }
+            Book book = new Book();
+            book.setCheckBox(new CheckBox());
+            book.setTitle(title);
+            book.setAuthor(author);
+            book.setPublisher(publisher);
+            book.setYear(year);
+            tableViewBooks.getItems().add(book);
+        } catch(NumberFormatException e) {
+            Alert yearNotANumberAlert = new Alert(Alert.AlertType.ERROR,
+                    "Wrong input: Year must be an integer value", ButtonType.OK);
+            yearNotANumberAlert.showAndWait();
+        } catch(RuntimeException e) {
+            Alert emptyFieldsAlert = new Alert(Alert.AlertType.ERROR,
+                    "Wrong input: At least one field must be filled", ButtonType.OK);
+            emptyFieldsAlert.showAndWait();
+        }
+    }
+
+
+    @FXML
+    void showAbout(ActionEvent event) {
+        Alert notPickedFileAlert = new Alert(Alert.AlertType.INFORMATION,
+                "Bibliographic Data Maintenance System", ButtonType.OK);
+        notPickedFileAlert.showAndWait();
+    }
+
+    public void changeTitleCellEvent(CellEditEvent cellEditEvent) {
         // Zmiana wartości atrybutu title w obiekcie
-        Book selectedObject = tableView.getSelectionModel().getSelectedItem();
+        Book selectedObject = tableViewBooks.getSelectionModel().getSelectedItem();
         selectedObject.setTitle(cellEditEvent.getNewValue().toString());
     }
 
-    public void changeAuthorCellEvent(TableColumn.CellEditEvent cellEditEvent) {
+    public void changeAuthorCellEvent(CellEditEvent cellEditEvent) {
         // Zmiana wartości atrybutu author w obiekcie
-        Book selectedObject = tableView.getSelectionModel().getSelectedItem();
+        Book selectedObject = tableViewBooks.getSelectionModel().getSelectedItem();
         selectedObject.setAuthor(cellEditEvent.getNewValue().toString());
     }
 
-    public void changePublisherCellEvent(TableColumn.CellEditEvent cellEditEvent) {
+    public void changePublisherCellEvent(CellEditEvent cellEditEvent) {
         // Zmiana wartości atrybutu publisher w obiekcie
-        Book selectedObject = tableView.getSelectionModel().getSelectedItem();
+        Book selectedObject = tableViewBooks.getSelectionModel().getSelectedItem();
         selectedObject.setPublisher(cellEditEvent.getNewValue().toString());
     }
 
-    public void changeYearCellEvent(TableColumn.CellEditEvent cellEditEvent) {
+    public void changeYearCellEvent(CellEditEvent cellEditEvent) {
         // Zmiana wartości atrybutu year w obiekcie
-        Book selectedObject = tableView.getSelectionModel().getSelectedItem();
+        Book selectedObject = tableViewBooks.getSelectionModel().getSelectedItem();
         selectedObject.setYear(Short.parseShort(cellEditEvent.getNewValue().toString()));
     }
-
 }
