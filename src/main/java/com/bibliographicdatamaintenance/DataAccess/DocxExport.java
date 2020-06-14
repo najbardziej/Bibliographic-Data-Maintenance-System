@@ -27,14 +27,7 @@ public class DocxExport {
 
         try {
             for(Book book : bookList) {
-                run.setText("Title: " + book.getTitle());
-                run.addBreak();
-                run.setText("Author: " + book.getAuthor());
-                run.addBreak();
-                run.setText("Publisher: " + book.getPublisher());
-                run.addBreak();
-                run.setText("Year: " + book.getYear());
-                run.addBreak();
+                run.setText(book.getAuthor() + ", " + book.getTitle() + ", " + book.getPublisher() + ", " + book.getYear());
                 run.addBreak();
             }
             document.write(fos);
