@@ -36,6 +36,7 @@ public class Main extends Application {
     }
 
     public static void main(String[] args) throws IOException {
+        // TODO: delete creating example .xml file
         // create new Bibliography
         List<Book> listOfBooks = Arrays.asList(
                 new Book("Tytuł", "Autor", "Wydawnictwo", (short) 2020),
