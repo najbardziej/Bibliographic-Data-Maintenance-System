@@ -12,10 +12,7 @@ public class TxtExport {
         try {
             bw = new BufferedWriter(new FileWriter(path));
             for(Book book : bookList) {
-                bw.write("Title: " + book.getTitle() + '\n');
-                bw.write("Author: " + book.getAuthor() + '\n');
-                bw.write("Publisher: " + book.getPublisher() + '\n');
-                bw.write("Year: " + book.getYear() + '\n');
+                bw.write(book.getAuthor() + ", " + book.getTitle() + ", " + book.getPublisher() + ", " + book.getYear());
                 bw.write("\n");
             }
         } catch(IOException e) {
