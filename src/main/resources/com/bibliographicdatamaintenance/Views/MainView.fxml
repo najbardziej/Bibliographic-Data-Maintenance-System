@@ -32,14 +32,14 @@
                                 <MenuItem mnemonicParsing="false" onAction="#openXml" text="Open XML file" />
                                 <MenuItem mnemonicParsing="false" onAction="#saveXml" text="Save selected rows to XML" />
                                 <MenuItem mnemonicParsing="false" onAction="#closeXml" text="Close selected XML file" />
-                            </items>
-                        </Menu>
-                        <Menu mnemonicParsing="false" text="Export selected rows to file">
-                            <items>
-                                <MenuItem mnemonicParsing="false" onAction="#exportToFile" text=".bib"  />
-                                <MenuItem mnemonicParsing="false" onAction="#exportToFile" text=".docx" />
-                                <MenuItem mnemonicParsing="false" onAction="#exportToFile" text=".rtf"  />
-                                <MenuItem mnemonicParsing="false" onAction="#exportToFile" text=".txt"  />
+                                <Menu mnemonicParsing="false" text="Export selected rows to file">
+                                    <items>
+                                        <MenuItem mnemonicParsing="false" onAction="#exportToFile" text=".bib"  />
+                                        <MenuItem mnemonicParsing="false" onAction="#exportToFile" text=".docx" />
+                                        <MenuItem mnemonicParsing="false" onAction="#exportToFile" text=".rtf"  />
+                                        <MenuItem mnemonicParsing="false" onAction="#exportToFile" text=".txt"  />
+                                    </items>
+                                </Menu>
                             </items>
                         </Menu>
                         <Menu mnemonicParsing="false" text="Edit">
