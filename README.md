@@ -38,11 +38,12 @@ Kryteria oceny:
     :heavy_check_mark: - interfejs IExporter
 
     - czy skorzystano z polimorfizmu 
-    :heavy_check_mark: - m. in. klasa Bibliography w metodzie exportToFile posługuje się klasą implementującą interfejs IExporter niezależnie od jej implementacji
+    :heavy_check_mark: - m. in. klasa Bibliography w metodzie exportToFile posługuje się klasą implementującą interfejs IExporter niezależnie od sposobu jej implementacji
 
     - czy wykorzystano co najmniej trzy wzorce projektowe GoF (Gang of Four) z wykluczeniem singletona 
-    :x:/:heavy_check_mark: 1/3:
-    Odwiedzający - Obiekt klasy IExporter odwiedza klasę Bibliography - w metodzie exportToFile służącej do exportowania bibliografii do pliku
+    :x:/:heavy_check_mark: 
+    
+    1/3:  Odwiedzający - Obiekt klasy IExporter odwiedza klasę Bibliography - w metodzie exportToFile służącej do exportowania bibliografii do pliku
 
     - czy prawidłowo zdekomponowano odpowiedzialności 
     :question:
