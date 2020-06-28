@@ -15,10 +15,9 @@ public class RtfExporter implements IExporter{
         Document document = rtfParser.createDefaultDocument();
         try {
             for(Book book : bookList) {
-                document.insertString(document.getLength(), "Title: " + book.getTitle() + '\n', null);
-                document.insertString(document.getLength(), "Author: " + book.getAuthor() + '\n', null);
-                document.insertString(document.getLength(), "Publisher: " + book.getPublisher() + '\n', null);
-                document.insertString(document.getLength(), "Year: " + book.getYear() + '\n', null);
+                document.insertString(document.getLength(),
+                        book.getAuthor() + ", " + book.getTitle() + ", " + book.getPublisher() + ", " + book.getYear(),
+                        null);
                 document.insertString(document.getLength(), "\n", null);
             }
         } catch (BadLocationException e) {
