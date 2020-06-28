@@ -10,7 +10,6 @@ import javax.swing.text.rtf.RTFEditorKit;
 
 
 public class RtfExporter implements IExporter{
-    // from Java Object to rtf file
     public void exportToFile(List<Book> bookList, String path) {
         RTFEditorKit rtfParser = new RTFEditorKit();
         Document document = rtfParser.createDefaultDocument();

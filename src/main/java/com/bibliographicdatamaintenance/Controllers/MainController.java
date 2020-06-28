@@ -135,10 +135,10 @@ public class MainController {
             for(File selectedFile : fileList) {
                 // Konwersja z pliku .xml do obiektu
                 InputStream inputStream = new FileInputStream(selectedFile);
-                String xml_line = XmlImportExport.xmlFileToString(inputStream);
+                String xml_line = XmlImportExport.readXmlFileToString(inputStream);
                 inputStream.close();
                 try {
-                    Bibliography bibliography = XmlImportExport.xmlStringToJavaObject(xml_line);
+                    Bibliography bibliography = XmlImportExport.deserializeXmlString(xml_line);
                     for(Book book : bibliography.getBookList()) {
                         book.setCheckBox(new CheckBox());
                         book.setFilename(selectedFile.getName());
@@ -202,7 +202,7 @@ public class MainController {
             try {
                 file = chooseOutputFile(".xml");
                 Bibliography bibliography = new Bibliography(bookListToSave);
-                XmlImportExport.javaObjectToXmlFile(bibliography, file.getAbsolutePath());
+                XmlImportExport.serializeToXmlFile(bibliography, file.getAbsolutePath());
             } catch(NullPointerException e) {
                 System.out.println("Nie wybrano pliku");
             }
@@ -214,26 +214,12 @@ public class MainController {
     }
 
     @FXML
-    void exportToBib(ActionEvent event) { exportToFile(".bib"); }
-
-    @FXML
-    void exportToDocx(ActionEvent event) { exportToFile(".docx"); }
-
-    @FXML
-    void exportToRtf(ActionEvent event) { exportToFile(".rtf"); }
-
-    @FXML
-    void exportToTxt(ActionEvent event) { exportToFile(".txt"); }
-
-    @FXML
-    void exportToFile(String extension) {
-        List<Book> bookListToExport = createListOfSelectedBooks();
-        Bibliography bibliography = new Bibliography(bookListToExport);
-        // Zapisywanie pliku w określonym formacie
-        if (bookListToExport.size() > 0) {
-            File file;
+    void exportToFile(ActionEvent event) {
+        Bibliography bibliography = new Bibliography(createListOfSelectedBooks());
+        if (bibliography.getBookList().size() > 0) {
             try {
-                file = chooseOutputFile(extension);
+                String extension = ((MenuItem)event.getSource()).getText();
+                File file = chooseOutputFile(extension);
                 IExporter exporter = ExporterFactory.getExporter(extension);
                 bibliography.exportToFile(exporter, file.getAbsolutePath());
             } catch(NullPointerException e) {
@@ -248,13 +234,13 @@ public class MainController {
 
     @FXML
     void selectAllCheckboxes(ActionEvent event) {
-        ObservableList<Book> productsList;
-        productsList = tableViewBooks.getItems();
+        ObservableList<Book> productList;
+        productList = tableViewBooks.getItems();
         if(selectAllCheckbox.isSelected()) {
-            for(Book book : productsList)
+            for(Book book : productList)
                 book.getCheckBox().setSelected(true);
         } else {
-            for(Book book : productsList)
+            for(Book book : productList)
                 book.getCheckBox().setSelected(false);
         }
     }

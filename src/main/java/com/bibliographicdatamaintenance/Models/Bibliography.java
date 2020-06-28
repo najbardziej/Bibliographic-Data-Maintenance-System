@@ -24,7 +24,7 @@ public class Bibliography {
         return this.bookList;
     }
 
-    public void setMyList(List<Book> bookList) {
+    public void setBookList(List<Book> bookList) {
         this.bookList = bookList;
     }
 

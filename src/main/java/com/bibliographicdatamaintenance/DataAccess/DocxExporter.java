@@ -10,7 +10,6 @@ import org.apache.poi.xwpf.usermodel.XWPFRun;
 
 
 public class DocxExporter implements IExporter {
-    // from Java Object to docx file
     public void exportToFile(List<Book> bookList, String path) {
         File file = new File(path);
         FileOutputStream fos = null;

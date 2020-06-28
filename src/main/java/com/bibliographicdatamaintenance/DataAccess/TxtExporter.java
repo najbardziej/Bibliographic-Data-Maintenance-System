@@ -6,7 +6,6 @@ import java.io.*;
 import java.util.List;
 
 public class TxtExporter implements IExporter {
-    // from Java Object to bib file
     public void exportToFile(List<Book> bookList, String path) {
         BufferedWriter bw = null;
         try {

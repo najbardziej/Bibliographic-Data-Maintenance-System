@@ -28,23 +28,23 @@
                 <MenuBar>
                     <menus>
                         <Menu mnemonicParsing="false" text="File">
-                          <items>
-                            <MenuItem mnemonicParsing="false" onAction="#openXml" text="Open XML file" />
-                            <MenuItem mnemonicParsing="false" onAction="#saveXml" text="Save selected rows to XML" />
-                            <Menu mnemonicParsing="false" text="Export selected rows to file">
-                          <items>
-                            <MenuItem mnemonicParsing="false" onAction="#exportToFile" text=".bib" />
-                            <MenuItem mnemonicParsing="false" onAction="#exportToFile" text=".docx" />
-                            <MenuItem mnemonicParsing="false" onAction="#exportToFile" text=".rtf" />
-                            <MenuItem mnemonicParsing="false" onAction="#exportToFile" text=".txt" />
-                          </items>
+                            <items>
+                                <MenuItem mnemonicParsing="false" onAction="#openXml" text="Open XML file" />
+                                <MenuItem mnemonicParsing="false" onAction="#saveXml" text="Save selected rows to XML" />
+                                <MenuItem mnemonicParsing="false" onAction="#closeXml" text="Close selected XML file" />
+                            </items>
                         </Menu>
-                        <MenuItem mnemonicParsing="false" onAction="#closeXml" text="Close selected XML file" />
+                        <Menu mnemonicParsing="false" text="Export selected rows to file">
+                            <items>
+                                <MenuItem mnemonicParsing="false" onAction="#exportToFile" text=".bib"  />
+                                <MenuItem mnemonicParsing="false" onAction="#exportToFile" text=".docx" />
+                                <MenuItem mnemonicParsing="false" onAction="#exportToFile" text=".rtf"  />
+                                <MenuItem mnemonicParsing="false" onAction="#exportToFile" text=".txt"  />
                             </items>
                         </Menu>
                         <Menu mnemonicParsing="false" text="Edit">
                             <items>
-                        <MenuItem mnemonicParsing="false" onAction="#deleteSelectedRows" text="Delete selected rows" />
+                                <MenuItem mnemonicParsing="false" onAction="#deleteSelectedRows" text="Delete selected rows" />
                             </items>
                         </Menu>
                         <Menu mnemonicParsing="false" text="Help">
@@ -57,34 +57,37 @@
                 <HBox spacing="10.0">
                     <children>
                         <Button fx:id="buttonOpenXml" defaultButton="true" mnemonicParsing="false" onAction="#openXml" text="Open XML" textOverrun="CLIP">
-                     <tooltip>
-                        <Tooltip text="Open XML file" />
-                     </tooltip></Button>
+                            <tooltip>
+                                <Tooltip text="Open XML file" />
+                            </tooltip>
+                        </Button>
                         <Button fx:id="buttonCloseXml" defaultButton="false" mnemonicParsing="false" onAction="#closeXml" text="Close XML" textOverrun="CLIP">
-                     <tooltip>
-                        <Tooltip text="Close selected XML file" />
-                     </tooltip></Button>
+                            <tooltip>
+                                <Tooltip text="Close selected XML file" />
+                            </tooltip>
+                        </Button>
                         <Button fx:id="buttonSaveFile" layoutX="286.0" layoutY="10.0" mnemonicParsing="false" onAction="#saveXml" text="Save to XML">
-                     <tooltip>
-                        <Tooltip text="Save selected rows to XML" />
-                     </tooltip></Button>
-                  <MenuButton fx:id="buttonExportFile" mnemonicParsing="false" text="Export to file">
-                    <items>
-                        <MenuItem mnemonicParsing="false" onAction="#exportToFile" text=".bib" />
-                        <MenuItem mnemonicParsing="false" onAction="#exportToFile" text=".docx" />
-                        <MenuItem mnemonicParsing="false" onAction="#exportToFile" text=".rtf" />
-                        <MenuItem mnemonicParsing="false" onAction="#exportToFile" text=".txt" />
-                    </items>
-                     <tooltip>
-                        <Tooltip text="Export selected rows to file" />
-                     </tooltip>
-                  </MenuButton>
+                            <tooltip>
+                                <Tooltip text="Save selected rows to XML" />
+                            </tooltip>
+                        </Button>
+                        <MenuButton fx:id="buttonExportFile" mnemonicParsing="false" text="Export to file">
+                            <items>
+                                <MenuItem mnemonicParsing="false" onAction="#exportToFile" text=".bib"  />
+                                <MenuItem mnemonicParsing="false" onAction="#exportToFile" text=".docx" />
+                                <MenuItem mnemonicParsing="false" onAction="#exportToFile" text=".rtf"  />
+                                <MenuItem mnemonicParsing="false" onAction="#exportToFile" text=".txt"  />
+                            </items>
+                            <tooltip>
+                                <Tooltip text="Export selected rows to file" />
+                            </tooltip>
+                        </MenuButton>
                         <CheckBox fx:id="selectAllCheckbox" mnemonicParsing="false" onAction="#selectAllCheckboxes" text="Select all">
                             <HBox.margin>
                                 <Insets top="4.0" />
                             </HBox.margin>
                         </CheckBox>
-                  <Region HBox.hgrow="ALWAYS" />
+                        <Region HBox.hgrow="ALWAYS" />
                         <Button fx:id="deleteRow" mnemonicParsing="false" onAction="#deleteSelectedRows" text="Delete selected rows" textOverrun="CLIP" BorderPane.alignment="TOP_RIGHT" />
                     </children>
                     <VBox.margin>
@@ -106,49 +109,49 @@
         </TableView>
     </center>
     <bottom>
-            <AnchorPane prefHeight="50.0">
-                <children>
-            <GridPane prefHeight="50.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-              <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="152.0" minWidth="10.0" prefWidth="120.0" />
-              </columnConstraints>
-              <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-              </rowConstraints>
-               <children>
-                          <TextField fx:id="titleTextFieldToAdd" promptText="Title">
-                     <GridPane.margin>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                     </GridPane.margin>
-                  </TextField>
-                          <TextField fx:id="authorTextFieldToAdd" promptText="Author" GridPane.columnIndex="1">
-                     <GridPane.margin>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                     </GridPane.margin>
-                  </TextField>
-                          <TextField fx:id="publisherTextFieldToAdd" promptText="Publisher" GridPane.columnIndex="2">
-                     <GridPane.margin>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                     </GridPane.margin>
-                  </TextField>
-                          <TextField fx:id="yearTextFieldToAdd" promptText="Year" GridPane.columnIndex="3">
-                     <GridPane.margin>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                     </GridPane.margin>
-                  </TextField>
-                          <Button mnemonicParsing="false" onAction="#addRecordToTable" text="Add record" GridPane.columnIndex="4" GridPane.halignment="RIGHT">
-                     <GridPane.margin>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </GridPane.margin>
-                  </Button>
-               </children>
-            </GridPane>
-                </children>
-            </AnchorPane>
+        <AnchorPane prefHeight="50.0">
+            <children>
+                <GridPane prefHeight="50.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="152.0" minWidth="10.0" prefWidth="120.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                    <children>
+                        <TextField fx:id="titleTextFieldToAdd" promptText="Title">
+                            <GridPane.margin>
+                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                            </GridPane.margin>
+                        </TextField>
+                        <TextField fx:id="authorTextFieldToAdd" promptText="Author" GridPane.columnIndex="1">
+                            <GridPane.margin>
+                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                            </GridPane.margin>
+                        </TextField>
+                        <TextField fx:id="publisherTextFieldToAdd" promptText="Publisher" GridPane.columnIndex="2">
+                            <GridPane.margin>
+                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                            </GridPane.margin>
+                        </TextField>
+                        <TextField fx:id="yearTextFieldToAdd" promptText="Year" GridPane.columnIndex="3">
+                            <GridPane.margin>
+                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                            </GridPane.margin>
+                        </TextField>
+                        <Button mnemonicParsing="false" onAction="#addRecordToTable" text="Add record" GridPane.columnIndex="4" GridPane.halignment="RIGHT">
+                            <GridPane.margin>
+                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                            </GridPane.margin>
+                        </Button>
+                    </children>
+                </GridPane>
+            </children>
+        </AnchorPane>
     </bottom>
     <left>
         <ListView fx:id="listOpenedXml" prefHeight="300.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
