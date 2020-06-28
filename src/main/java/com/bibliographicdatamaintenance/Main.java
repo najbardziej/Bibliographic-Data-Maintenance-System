@@ -43,7 +43,7 @@ public class Main extends Application {
                 new Book("Tytuł3", "Autor3", "Wydawnictwo3", (short) 2020)
         );
         Bibliography bibliography = new Bibliography(listOfBooks);
-        System.out.println(Arrays.toString(bibliography.getMyList().toArray()));
+        System.out.println(Arrays.toString(bibliography.getBookList().toArray()));
 
         // from Java Object to XML File, String
         try {
@@ -56,7 +56,7 @@ public class Main extends Application {
 
         // from XML String to Java Object
         Bibliography bibliography2 = XmlImportExport.xmlStringToJavaObject(s);
-        System.out.println(Arrays.toString(bibliography2.getMyList().toArray()));
+        System.out.println(Arrays.toString(bibliography2.getBookList().toArray()));
 
         launch();
 

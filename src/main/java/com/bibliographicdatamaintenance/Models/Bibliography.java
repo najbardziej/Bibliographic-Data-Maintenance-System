@@ -1,5 +1,6 @@
 package com.bibliographicdatamaintenance.Models;
 
+import com.bibliographicdatamaintenance.DataAccess.IExporter;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
@@ -10,20 +11,24 @@ import java.util.*;
 public class Bibliography {
     @JacksonXmlElementWrapper(useWrapping = false)
     @JacksonXmlProperty(localName = "book")
-    private List<Book> myList;
+    private List<Book> bookList;
 
-    public Bibliography(List<Book> myList) {
-        this.myList = myList;
+    public Bibliography(List<Book> bookList) {
+        this.bookList = bookList;
     }
 
     public Bibliography() {
     }
 
-    public List<Book> getMyList() {
-        return this.myList;
+    public List<Book> getBookList() {
+        return this.bookList;
     }
 
-    public void setMyList(List<Book> myList) {
-        this.myList = myList;
+    public void setMyList(List<Book> bookList) {
+        this.bookList = bookList;
+    }
+
+    public void exportToFile(IExporter exporter, String path) {
+        exporter.exportToFile(this.bookList, path);
     }
 }
