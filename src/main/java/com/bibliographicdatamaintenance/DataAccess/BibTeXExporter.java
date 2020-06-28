@@ -5,9 +5,8 @@ import com.bibliographicdatamaintenance.Models.Book;
 import java.io.*;
 import java.util.List;
 
-public class BibTeXExport {
-    // from Java Object to bib file
-    public void javaObjectToBiBTeXFile(List<Book> bookList, String path) {
+public class BibTeXExporter implements IExporter {
+    public void exportToFile(List<Book> bookList, String path) {
         BufferedWriter bw = null;
         int bibTexKey = 1;
         try {

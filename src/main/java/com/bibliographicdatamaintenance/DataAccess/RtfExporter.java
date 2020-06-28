@@ -9,9 +9,8 @@ import javax.swing.text.Document;
 import javax.swing.text.rtf.RTFEditorKit;
 
 
-public class RtfExport {
-    // from Java Object to rtf file
-    public void javaObjectToRtfFile(List<Book> bookList, String path) {
+public class RtfExporter implements IExporter{
+    public void exportToFile(List<Book> bookList, String path) {
         RTFEditorKit rtfParser = new RTFEditorKit();
         Document document = rtfParser.createDefaultDocument();
         try {

@@ -9,9 +9,8 @@ import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 
 
-public class DocxExport {
-    // from Java Object to docx file
-    public void javaObjectToDocxFile(List<Book> bookList, String path) {
+public class DocxExporter implements IExporter {
+    public void exportToFile(List<Book> bookList, String path) {
         File file = new File(path);
         FileOutputStream fos = null;
         try {

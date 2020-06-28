@@ -120,7 +120,6 @@ public class MainController {
         tableViewYearColumn.setCellFactory(TextFieldTableCell.forTableColumn(new ShortStringConverter()));
     }
 
-
     @FXML
     void openXml(ActionEvent event) throws IOException {
         // Utworzenie okna do wybierania plików (tylko .xml)
@@ -136,11 +135,11 @@ public class MainController {
             for(File selectedFile : fileList) {
                 // Konwersja z pliku .xml do obiektu
                 InputStream inputStream = new FileInputStream(selectedFile);
-                String xml_line = XmlImportExport.xmlFileToString(inputStream);
+                String xml_line = XmlImportExport.readXmlFileToString(inputStream);
                 inputStream.close();
                 try {
-                    Bibliography bibliography = XmlImportExport.xmlStringToJavaObject(xml_line);
-                    for(Book book : bibliography.getMyList()) {
+                    Bibliography bibliography = XmlImportExport.deserializeXmlString(xml_line);
+                    for(Book book : bibliography.getBookList()) {
                         book.setCheckBox(new CheckBox());
                         book.setFilename(selectedFile.getName());
                         tableViewBooks.getItems().add(book);
@@ -176,7 +175,6 @@ public class MainController {
         }
     }
 
-
     File chooseOutputFile(String extension) {
         FileChooser fileChooser = new FileChooser();
         FileChooser.ExtensionFilter extFilter;
@@ -204,7 +202,7 @@ public class MainController {
             try {
                 file = chooseOutputFile(".xml");
                 Bibliography bibliography = new Bibliography(bookListToSave);
-                XmlImportExport.javaObjectToXmlFile(bibliography, file.getAbsolutePath());
+                XmlImportExport.serializeToXmlFile(bibliography, file.getAbsolutePath());
             } catch(NullPointerException e) {
                 System.out.println("Nie wybrano pliku");
             }
@@ -215,49 +213,15 @@ public class MainController {
         }
     }
 
-
     @FXML
-    void exportToBib(ActionEvent event) {
-        exportToFile(".bib");
-    }
-
-    @FXML
-    void exportToDocx(ActionEvent event) {
-        exportToFile(".docx");
-    }
-
-    @FXML
-    void exportToRtf(ActionEvent event) {
-        exportToFile(".rtf");
-    }
-
-    @FXML
-    void exportToTxt(ActionEvent event) {
-        exportToFile(".txt");
-    }
-
-    @FXML
-    void exportToFile(String extension) {
-        List<Book> bookListToExport = createListOfSelectedBooks();
-
-        // Zapisywanie pliku w określonym formacie
-        if (bookListToExport.size() > 0) {
-            File file;
+    void exportToFile(ActionEvent event) {
+        Bibliography bibliography = new Bibliography(createListOfSelectedBooks());
+        if (bibliography.getBookList().size() > 0) {
             try {
-                file = chooseOutputFile(extension);
-                if(extension.equals(".docx")) {
-                    DocxExport docx = new DocxExport();
-                    docx.javaObjectToDocxFile(bookListToExport, file.getAbsolutePath());
-                } else if(extension.equals(".bib")) {
-                    BibTeXExport rtf = new BibTeXExport();
-                    rtf.javaObjectToBiBTeXFile(bookListToExport, file.getAbsolutePath());
-                } else if(extension.equals(".txt")) {
-                    TxtExport txt = new TxtExport();
-                    txt.javaObjectToTxtFile(bookListToExport, file.getAbsolutePath());
-                } else if(extension.equals(".rtf")) {
-                    RtfExport rtf = new RtfExport();
-                    rtf.javaObjectToRtfFile(bookListToExport, file.getAbsolutePath());
-                }
+                String extension = ((MenuItem)event.getSource()).getText();
+                File file = chooseOutputFile(extension);
+                IExporter exporter = ExporterFactory.getExporter(extension);
+                bibliography.exportToFile(exporter, file.getAbsolutePath());
             } catch(NullPointerException e) {
                 System.out.println("Nie wybrano pliku");
             }
@@ -267,21 +231,19 @@ public class MainController {
             notSelectAnyRowAlert.showAndWait();
         }
     }
-
 
     @FXML
     void selectAllCheckboxes(ActionEvent event) {
-        ObservableList<Book> productsList;
-        productsList = tableViewBooks.getItems();
+        ObservableList<Book> productList;
+        productList = tableViewBooks.getItems();
         if(selectAllCheckbox.isSelected()) {
-            for(Book book : productsList)
+            for(Book book : productList)
                 book.getCheckBox().setSelected(true);
         } else {
-            for(Book book : productsList)
+            for(Book book : productList)
                 book.getCheckBox().setSelected(false);
         }
     }
-
 
     @FXML
     void deleteSelectedRows(ActionEvent event) {
@@ -298,7 +260,6 @@ public class MainController {
             notSelectAnyRowAlert.showAndWait();
         }
     }
-
 
     @FXML
     void addRecordToTable(ActionEvent event) {
@@ -328,7 +289,6 @@ public class MainController {
             emptyFieldsAlert.showAndWait();
         }
     }
-
 
     @FXML
     void showAbout(ActionEvent event) {

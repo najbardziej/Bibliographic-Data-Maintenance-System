@@ -9,30 +9,26 @@ import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 
 public class XmlImportExport
 {
-    //from Java Object to XML String
-    public static String javaObjectToXmlString(Bibliography bibliography) throws IOException
+    public static String serializeToXmlString(Bibliography bibliography) throws IOException
     {
         XmlMapper xmlMapper = new XmlMapper();
         return xmlMapper.writeValueAsString(bibliography);
     }
 
-    //from Java Object to XML file
-    public static void javaObjectToXmlFile(Bibliography bibliography, String path) throws IOException
+    public static void serializeToXmlFile(Bibliography bibliography, String path) throws IOException
     {
         XmlMapper xmlMapper = new XmlMapper();
         File file = new File(path);
         xmlMapper.writeValue(file, bibliography);
     }
 
-    //from XML String to Java Object
-    public static Bibliography xmlStringToJavaObject(String string) throws IOException
+    public static Bibliography deserializeXmlString(String string) throws IOException
     {
         XmlMapper xmlMapper = new XmlMapper();
         return xmlMapper.readValue(string, Bibliography.class);
     }
 
-    //from XML file to String
-    public static String xmlFileToString(InputStream is) throws IOException
+    public static String readXmlFileToString(InputStream is) throws IOException
     {
         StringBuilder sb = new StringBuilder();
         String line;

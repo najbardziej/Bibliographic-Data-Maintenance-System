@@ -15,7 +15,7 @@ Kryteria oceny:
 - Narzędzia:
 
     - czy projekt jest Mavenowy i czy poprawnie buduje się z linii komend konsoli systemu operacyjnego (uruchomionej poza środowiskiem deweloperskim) 
-    :heavy_check_mark: (Travis nam to zapewnia)
+    :heavy_check_mark: - TravisCI nam to zapewnia
 
     - czy budowany jest przez Mavena wykonywalny jar możliwy do uruchomienia z konsoli systemu operacyjnego (uruchomionej poza środowiskiem deweloperskim) 
     :heavy_check_mark:
@@ -24,7 +24,7 @@ Kryteria oceny:
     :x:
 
     - czy testy jednostkowe mają status PASSED w trakcie procesu budowania projektu przez Mavena 
-    :x:
+    :x:/:heavy_check_mark: - Travis to zapewni gdy tylko będą testy
 
     - czy projekt został umieszczony pod kontrolą wersji za pomocą Gita 
     :heavy_check_mark:
@@ -35,16 +35,18 @@ Kryteria oceny:
 - Design:
 
     - czy skorzystano z interfejsów i/lub klas abstrakcyjnych do reprezentowania abstrakcji jako jednego z elementów programowania obiektowego
-    :x:
+    :heavy_check_mark: - interfejs IExporter
 
     - czy skorzystano z polimorfizmu 
-    :x:
+    :heavy_check_mark: - m. in. klasa Bibliography w metodzie exportToFile posługuje się klasą implementującą interfejs IExporter niezależnie od sposobu jej implementacji
 
     - czy wykorzystano co najmniej trzy wzorce projektowe GoF (Gang of Four) z wykluczeniem singletona 
-    :x:
+    :x:/:heavy_check_mark: 
+    
+    1/3:  Odwiedzający - Obiekt klasy IExporter odwiedza klasę Bibliography - w metodzie exportToFile służącej do exportowania bibliografii do pliku
 
     - czy prawidłowo zdekomponowano odpowiedzialności 
-    :x:
+    :question:
 
     - czy wykorzystano jakiś wzorzec architektoniczny, MVC, MVP lub inny, w tym wynikający z użytego frameworku (nie należy mylić wzorców architektonicznych z wzorcami projektowymi) 
     :heavy_check_mark: - MVC

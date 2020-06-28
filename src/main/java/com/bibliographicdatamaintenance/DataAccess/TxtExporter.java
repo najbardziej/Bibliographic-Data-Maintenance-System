@@ -5,9 +5,8 @@ import com.bibliographicdatamaintenance.Models.Book;
 import java.io.*;
 import java.util.List;
 
-public class TxtExport {
-    // from Java Object to bib file
-    public void javaObjectToTxtFile(List<Book> bookList, String path) {
+public class TxtExporter implements IExporter {
+    public void exportToFile(List<Book> bookList, String path) {
         BufferedWriter bw = null;
         try {
             bw = new BufferedWriter(new FileWriter(path));

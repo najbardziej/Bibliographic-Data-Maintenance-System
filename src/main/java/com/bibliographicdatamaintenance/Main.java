@@ -1,12 +1,7 @@
 package com.bibliographicdatamaintenance;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
 
-import com.bibliographicdatamaintenance.DataAccess.XmlImportExport;
-import com.bibliographicdatamaintenance.Models.Bibliography;
-import com.bibliographicdatamaintenance.Models.Book;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -36,30 +31,6 @@ public class Main extends Application {
     }
 
     public static void main(String[] args) throws IOException {
-        // TODO: delete creating example .xml file
-        // create new Bibliography
-        List<Book> listOfBooks = Arrays.asList(
-                new Book("Tytuł", "Autor", "Wydawnictwo", (short) 2020),
-                new Book("Tytuł2", "Autor2", "Wydawnictwo2", (short) 2020),
-                new Book("Tytuł3", "Autor3", "Wydawnictwo3", (short) 2020)
-        );
-        Bibliography bibliography = new Bibliography(listOfBooks);
-        System.out.println(Arrays.toString(bibliography.getMyList().toArray()));
-
-        // from Java Object to XML File, String
-        try {
-            XmlImportExport.javaObjectToXmlFile(bibliography,"bibliography.xml");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        String s = XmlImportExport.javaObjectToXmlString(bibliography);
-        System.out.println(s);
-
-        // from XML String to Java Object
-        Bibliography bibliography2 = XmlImportExport.xmlStringToJavaObject(s);
-        System.out.println(Arrays.toString(bibliography2.getMyList().toArray()));
-
         launch();
-
     }
 }
