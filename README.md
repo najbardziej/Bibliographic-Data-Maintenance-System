@@ -21,7 +21,7 @@ Kryteria oceny:
     :heavy_check_mark:
 
     - czy zrealizowano co najmniej 5 przykładowych testów jednostkowych (z wyłączeniem testów warstwy danych) 
-    :x:/:heavy_check_mark: - 4/5
+    :heavy_check_mark:
 
     - czy testy jednostkowe mają status PASSED w trakcie procesu budowania projektu przez Mavena 
     :heavy_check_mark: - Travis CI nam to zapewnia
