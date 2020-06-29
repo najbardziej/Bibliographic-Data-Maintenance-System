@@ -133,12 +133,11 @@ public class MainController {
         try {
             fileList = fileChooser.showOpenMultipleDialog(borderPane.getScene().getWindow());
             for(File selectedFile : fileList) {
-                // Konwersja z pliku .xml do obiektu
-                InputStream inputStream = new FileInputStream(selectedFile);
-                String xml_line = XmlImportExport.readXmlFileToString(inputStream);
-                inputStream.close();
                 try {
-                    Bibliography bibliography = XmlImportExport.deserializeXmlString(xml_line);
+                    // Konwersja z pliku .xml do obiektu
+                    InputStream inputStream = new FileInputStream(selectedFile);
+                    Bibliography bibliography = XmlImportExport.deserializeXmlFile(inputStream);
+                    inputStream.close();
                     for(Book book : bibliography.getBookList()) {
                         book.setCheckBox(new CheckBox());
                         book.setFilename(selectedFile.getName());
