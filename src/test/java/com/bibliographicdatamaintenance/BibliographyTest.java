@@ -31,7 +31,7 @@ public class BibliographyTest{
         bibliography = new Bibliography(bookList);
     }
     @Test
-    public void TestExportToTxt(){
+    public void testExportToTxt(){
         IExporter exporter = ExporterFactory.getExporter(".txt");
         assertThat(exporter, instanceOf(TxtExporter.class));
 
@@ -42,7 +42,7 @@ public class BibliographyTest{
         file.delete();
     }
     @Test
-    public void TestExportToRtf(){
+    public void testExportToRtf(){
         IExporter exporter = ExporterFactory.getExporter(".rtf");
         assertThat(exporter, instanceOf(RtfExporter.class));
 
@@ -53,7 +53,7 @@ public class BibliographyTest{
         file.delete();
     }
     @Test
-    public void TestExportToBibTex(){
+    public void testExportToBibTex(){
         IExporter exporter = ExporterFactory.getExporter(".bib");
         assertThat(exporter, instanceOf(BibTeXExporter.class));
 
@@ -64,7 +64,7 @@ public class BibliographyTest{
         file.delete();
     }
     @Test
-    public void TestExportToDocx(){
+    public void testExportToDocx(){
         IExporter exporter = ExporterFactory.getExporter(".docx");
         assertThat(exporter, instanceOf(DocxExporter.class));
 
