@@ -15,16 +15,16 @@ Kryteria oceny:
 - Narzędzia:
 
     - czy projekt jest Mavenowy i czy poprawnie buduje się z linii komend konsoli systemu operacyjnego (uruchomionej poza środowiskiem deweloperskim) 
-    :heavy_check_mark: - TravisCI nam to zapewnia
+    :heavy_check_mark: - Travis CI nam to zapewnia
 
     - czy budowany jest przez Mavena wykonywalny jar możliwy do uruchomienia z konsoli systemu operacyjnego (uruchomionej poza środowiskiem deweloperskim) 
     :heavy_check_mark:
 
     - czy zrealizowano co najmniej 5 przykładowych testów jednostkowych (z wyłączeniem testów warstwy danych) 
-    :x:
+    :heavy_check_mark:
 
     - czy testy jednostkowe mają status PASSED w trakcie procesu budowania projektu przez Mavena 
-    :x:/:heavy_check_mark: - Travis to zapewni gdy tylko będą testy
+    :heavy_check_mark: - Travis CI nam to zapewnia
 
     - czy projekt został umieszczony pod kontrolą wersji za pomocą Gita 
     :heavy_check_mark:
@@ -43,7 +43,7 @@ Kryteria oceny:
     - czy wykorzystano co najmniej trzy wzorce projektowe GoF (Gang of Four) z wykluczeniem singletona 
     :x:/:heavy_check_mark: 
     
-    1/3:  Odwiedzający - Obiekt klasy IExporter odwiedza klasę Bibliography - w metodzie exportToFile służącej do exportowania bibliografii do pliku
+    1/3:  Odwiedzający - Obiekt klasy implementującej interfejs IExporter odwiedza klasę Bibliography - w metodzie exportToFile służącej do exportowania bibliografii do pliku
 
     - czy prawidłowo zdekomponowano odpowiedzialności 
     :question:

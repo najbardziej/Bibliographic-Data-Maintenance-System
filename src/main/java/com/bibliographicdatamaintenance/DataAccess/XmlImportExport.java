@@ -1,20 +1,12 @@
 package com.bibliographicdatamaintenance.DataAccess;
 
 import java.io.*;
-import java.util.List;
 
 import com.bibliographicdatamaintenance.Models.Bibliography;
-import com.bibliographicdatamaintenance.Models.Book;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 
 public class XmlImportExport
 {
-    public static String serializeToXmlString(Bibliography bibliography) throws IOException
-    {
-        XmlMapper xmlMapper = new XmlMapper();
-        return xmlMapper.writeValueAsString(bibliography);
-    }
-
     public static void serializeToXmlFile(Bibliography bibliography, String path) throws IOException
     {
         XmlMapper xmlMapper = new XmlMapper();
@@ -22,13 +14,7 @@ public class XmlImportExport
         xmlMapper.writeValue(file, bibliography);
     }
 
-    public static Bibliography deserializeXmlString(String string) throws IOException
-    {
-        XmlMapper xmlMapper = new XmlMapper();
-        return xmlMapper.readValue(string, Bibliography.class);
-    }
-
-    public static String readXmlFileToString(InputStream is) throws IOException
+    public static Bibliography deserializeXmlFile(InputStream is) throws IOException
     {
         StringBuilder sb = new StringBuilder();
         String line;
@@ -38,6 +24,9 @@ public class XmlImportExport
             sb.append(line);
         }
         br.close();
-        return sb.toString();
+        String xmlString = sb.toString();
+
+        XmlMapper xmlMapper = new XmlMapper();
+        return xmlMapper.readValue(xmlString, Bibliography.class);
     }
 }
